@@ -1,18 +1,14 @@
+import RaceLaneComponent from '../components/RaceLane.component';
 import useGarage from '../hooks/useGarage';
 
 export default function GarageView() {
-  const { cars, handleDeleteCar } = useGarage();
+  const { cars } = useGarage();
 
   console.log(cars);
   return (
     <ul>
       {cars.map((car) => (
-        <li key={car.id} style={{ color: car.color }}>
-          {car.name}
-          <button type="button" onClick={() => handleDeleteCar(car.id)}>
-            delete
-          </button>
-        </li>
+        <RaceLaneComponent key={car.id} car={car} />
       ))}
     </ul>
   );

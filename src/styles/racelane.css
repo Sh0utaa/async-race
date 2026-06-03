@@ -1,0 +1,9 @@
+.race-lane {
+  width: 100%;
+  border: 1px solid black;
+}
+
+.car-graphic {
+  width: 75px;
+  height: auto;
+}
