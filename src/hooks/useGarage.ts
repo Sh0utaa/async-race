@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { Car } from '../utils/types';
-import { deleteCar, getAllCars } from '../services/garageService';
+import type { Car, CreateCarDto } from '../utils/types';
+import { createCar, deleteCar, getAllCars } from '../services/garageService';
 
 export default function useGarage() {
   const [cars, setCars] = useState<Car[]>([]);
@@ -14,6 +14,16 @@ export default function useGarage() {
     fetchAllCars();
   }, []);
 
+  const handleCreateCar = async (car: CreateCarDto): Promise<void> => {
+    try {
+      const newCar = await createCar(car);
+
+      setCars((prev) => [...prev, newCar]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDeleteCar = async (id: number): Promise<void> => {
     try {
       await deleteCar(id);
@@ -24,5 +34,5 @@ export default function useGarage() {
     }
   };
 
-  return { cars, handleDeleteCar };
+  return { cars, handleDeleteCar, handleCreateCar };
 }
