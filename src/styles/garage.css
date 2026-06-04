@@ -1,0 +1,74 @@
+.garage {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.garage-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  flex-wrap: wrap;
+}
+
+.garage-race-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.garage-create-form,
+.garage-update-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.garage-controls input[type='text'] {
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+}
+
+.garage-controls input[type='color'] {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.garage-controls button {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  text-transform: lowercase;
+  color: #333;
+  transition: background 0.15s;
+}
+
+.garage-controls button:hover {
+  background: #f0f0f0;
+}
+
+.garage-generate-btn {
+  margin-left: auto;
+}
+
+.garage-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

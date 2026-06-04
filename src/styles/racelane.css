@@ -1,9 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .race-lane {
   width: 100%;
   border: 1px solid black;
+  display: flex;
 }
 
-.car-graphic {
-  width: 75px;
+svg {
+  transform: scaleX(-1);
+  transform-origin: center;
+}
+
+.race-lane {
+  width: 100%;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #fafafa;
+}
+
+.lane-meta-controls,
+.lane-race-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lane-meta-controls button,
+.lane-race-controls button {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.15s;
+}
+
+.lane-meta-controls button:hover,
+.lane-race-controls button:hover {
+  background: #f0f0f0;
+}
+
+.lane-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.lane-track svg {
+  transform: scaleX(-1);
+  transform-origin: center;
+  width: 90px;
   height: auto;
 }

@@ -1,6 +1,6 @@
 import type { Car } from '../utils/types';
 import '../styles/racelane.css';
-import CarIcon from '../assets/svg/car-side-svgrepo-com.svg?react';
+import CarComponent from './Car.component';
 
 interface RaceLaneProps {
   car: Car;
@@ -9,14 +9,16 @@ interface RaceLaneProps {
 export default function RaceLaneComponent({ car }: RaceLaneProps) {
   return (
     <div className="race-lane">
-      <div className="customise">
-        <button>select</button>
-        <button>remove</button>
+      <div className="lane-meta-controls">
+        <button type="button">select</button>
+        <button type="button">remove</button>
       </div>
-      <CarIcon className="car-graphic" stroke={car.color} />
-      <div className="actions">
-        <button>race</button>
-        <button>stop</button>
+      <div className="lane-race-controls">
+        <button type="button">A</button>
+        <button type="button">B</button>
+      </div>
+      <div className="lane-track">
+        <CarComponent car={car} />
       </div>
     </div>
   );
