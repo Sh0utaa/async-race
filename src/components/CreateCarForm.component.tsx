@@ -1,19 +1,15 @@
 import { useState } from 'react';
 import type { CreateCarDto } from '../utils/types';
+import useGarage from '../hooks/useGarage';
 
-interface CreateCarComponentProps {
-  onCreate: (car: CreateCarDto) => void;
-}
-
-export default function CreateCarComponent({
-  onCreate,
-}: CreateCarComponentProps) {
+export default function CreateCarComponent() {
+  const { onCreateCar } = useGarage();
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
 
   const handleCreate = async () => {
     const car: CreateCarDto = { name, color };
-    await onCreate(car);
+    await onCreateCar(car);
 
     setName('');
     setColor('');

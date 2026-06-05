@@ -4,8 +4,13 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import type { Car, CreateCarDto } from '../utils/types';
-import { createCar, getAllCars, deleteCar } from '../services/garageService';
+import type { Car, CreateCarDto, UpdateCarDto } from '../utils/types';
+import {
+  createCar,
+  getAllCars,
+  deleteCar,
+  updateCar,
+} from '../services/garageService';
 
 interface GarageState {
   cars: Car[];
@@ -40,13 +45,13 @@ export const handleDeleteCar = createAsyncThunk(
   },
 );
 
-// export const handleUpdateCar = createAsyncThunk(
-//   'garage/updateCar',
-//   async (id: number, car: UpdateCarDto) => {
-//     const data = await updateCar(id, car);
-//     return data;
-//   },
-// );
+export const handleUpdateCar = createAsyncThunk(
+  'garage/updateCar',
+  async ({ id, car }: { id: number; car: UpdateCarDto }) => {
+    const data = await updateCar(id, car);
+    return data;
+  },
+);
 
 const garageSlice = createSlice({
   name: 'garage',

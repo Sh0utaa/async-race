@@ -1,18 +1,19 @@
 import type { Car } from '../utils/types';
 import '../styles/racelane.css';
 import CarComponent from './Car.component';
+import useGarage from '../hooks/useGarage';
 
 interface RaceLaneProps {
   car: Car;
-  onDelete: (id: number) => void;
 }
 
-export default function RaceLaneComponent({ car, onDelete }: RaceLaneProps) {
+export default function RaceLaneComponent({ car }: RaceLaneProps) {
+  const { onDeleteCar } = useGarage();
   return (
     <div className="race-lane">
       <div className="lane-meta-controls">
         <button type="button">select</button>
-        <button type="button" onClick={() => onDelete(car.id)}>
+        <button type="button" onClick={() => onDeleteCar(car.id)}>
           remove
         </button>
       </div>

@@ -7,7 +7,7 @@ import ChevronForwards from '../assets/svg/chevron_forwards.svg?react';
 import '../styles/garage.css';
 
 export default function GarageView() {
-  const { cars, handleDeleteCar, handleCreateCar } = useGarage();
+  const { cars } = useGarage();
   const [page, setPage] = useState(1);
 
   return (
@@ -17,7 +17,7 @@ export default function GarageView() {
           <button type="button">race</button>
           <button type="button">reset</button>
         </div>
-        <CreateCarComponent onCreate={handleCreateCar} />
+        <CreateCarComponent />
         <div className="garage-update-form">
           <input type="text" name="upd-name" placeholder="brand" />
           <input type="color" name="upd-color" />
@@ -29,11 +29,7 @@ export default function GarageView() {
       </div>
       <div className="garage-lanes">
         {cars.map((car) => (
-          <RaceLaneComponent
-            key={car.id}
-            car={car}
-            onDelete={handleDeleteCar}
-          />
+          <RaceLaneComponent key={car.id} car={car} />
         ))}
       </div>
       <div className="pagination">
