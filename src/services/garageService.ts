@@ -1,15 +1,27 @@
-import type { Car, CreateCarDto, UpdateCarDto } from '../utils/types';
+import type {
+  Car,
+  CarsResponse,
+  CreateCarDto,
+  UpdateCarDto,
+} from '../utils/types';
 import { BASE_URL } from './apiConfig';
 
 const GARAGE_URL = `${BASE_URL}/garage`;
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
-export const getAllCars = async (): Promise<Car[]> => {
-  const response = await fetch(`${GARAGE_URL}`);
+export const getAllCars = async (page: number): Promise<CarsResponse> => {
+  const response = await fetch(`${GARAGE_URL}/?_page=${page}&_limit=7`);
   if (!response.ok) {
     throw new Error(`Failed to fetch cars. Status ${response.status}`);
   }
-  return response.json() as Promise<Car[]>;
+
+  const cars = await response.json();
+  const totalCount = Number(response.headers.get('X-Total-Count'));
+
+  return {
+    cars,
+    totalCount,
+  };
 };
 
 export const getCarById = async (id: number): Promise<Car> => {

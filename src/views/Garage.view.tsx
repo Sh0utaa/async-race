@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import RaceLaneComponent from '../components/RaceLane.component';
 import useGarage from '../hooks/useGarage';
-import ChevronBackwards from '../assets/svg/chevron_backwards.svg?react';
-import ChevronForwards from '../assets/svg/chevron_forwards.svg?react';
-import '../styles/garage.css';
 import CarCreationPanel from '../components/CarCreationPanel.component';
 import CarUpdatePanel from '../components/CarUpdatePanel.component';
+import PaginationComponent from '../components/Pagination.component';
+import '../styles/garage.css';
 
 export default function GarageView() {
   const { cars } = useGarage();
-  const [page, setPage] = useState(1);
 
   return (
     <div className="garage">
@@ -29,18 +26,7 @@ export default function GarageView() {
           <RaceLaneComponent key={car.id} car={car} />
         ))}
       </div>
-      <div className="pagination">
-        <button type="button" onClick={() => setPage(page - 1)}>
-          <ChevronBackwards fill="black" />
-        </button>
-        <p>page #{page}</p>
-        <button type="button" onClick={() => setPage(page + 1)}>
-          <ChevronForwards fill="black" />
-        </button>
-        <div className="garage-count">
-          <p>GARAGE ({cars.length})</p>
-        </div>
-      </div>
+      <PaginationComponent />
     </div>
   );
 }

@@ -4,7 +4,12 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import type { Car, CreateCarDto, UpdateCarDto } from '../utils/types';
+import type {
+  Car,
+  CarsResponse,
+  CreateCarDto,
+  UpdateCarDto,
+} from '../utils/types';
 import {
   createCar,
   getAllCars,
@@ -14,6 +19,7 @@ import {
 
 interface GarageState {
   cars: Car[];
+  totalCount: number;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   selectedCar: Car | null;
   error: string | null;
@@ -21,15 +27,20 @@ interface GarageState {
 
 const initialState: GarageState = {
   cars: [],
+  totalCount: 0,
   status: 'idle',
   selectedCar: null,
   error: null,
 };
 
-export const fetchCars = createAsyncThunk('garage/fetchCars', async () => {
-  const data = await getAllCars();
-  return data;
-});
+export const fetchCars = createAsyncThunk(
+  'garage/fetchCars',
+  async (page: number) => {
+    // TODO Add Pagination State
+    const data = await getAllCars(page);
+    return data;
+  },
+);
 
 export const handleCreateCar = createAsyncThunk(
   'garage/createCar',
@@ -68,10 +79,14 @@ const garageSlice = createSlice({
       .addCase(fetchCars.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchCars.fulfilled, (state, action: PayloadAction<Car[]>) => {
-        state.status = 'succeeded';
-        state.cars = action.payload;
-      })
+      .addCase(
+        fetchCars.fulfilled,
+        (state, action: PayloadAction<CarsResponse>) => {
+          state.status = 'succeeded';
+          state.cars = action.payload.cars;
+          state.totalCount = action.payload.totalCount;
+        },
+      )
       .addCase(fetchCars.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch cars';

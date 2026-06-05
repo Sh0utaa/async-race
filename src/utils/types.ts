@@ -4,6 +4,11 @@ export interface Car {
   id: number;
 }
 
+export interface CarsResponse {
+  cars: Car[];
+  totalCount: number;
+}
+
 export interface CreateCarDto {
   name: string;
   color: string;

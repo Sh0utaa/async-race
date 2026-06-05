@@ -8,15 +8,20 @@ import {
   handleUpdateCar,
   setSelectedCar,
 } from '../redux/garageSlice';
+import usePage from './usePages';
 
 export default function useGarage() {
   const dispatch = useAppDispatch();
 
-  const { cars, selectedCar } = useAppSelector((state) => state.garage);
+  const { cars, selectedCar, totalCount } = useAppSelector(
+    (state) => state.garage,
+  );
+
+  const { garagePage } = usePage();
 
   useEffect(() => {
-    dispatch(fetchCars());
-  }, [dispatch]);
+    dispatch(fetchCars(garagePage));
+  }, [dispatch, garagePage]);
 
   const onCreateCar = (car: CreateCarDto) => {
     dispatch(handleCreateCar(car));
@@ -41,5 +46,6 @@ export default function useGarage() {
     onUpdateCar,
     onSelectCar,
     selectedCar,
+    totalCount,
   };
 }

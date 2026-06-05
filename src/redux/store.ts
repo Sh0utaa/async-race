@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import garageReducer from './garageSlice';
+import pageReducer from './paginationSlice';
 
 export const store = configureStore({
-  reducer: { garage: garageReducer },
+  reducer: { garage: garageReducer, page: pageReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
