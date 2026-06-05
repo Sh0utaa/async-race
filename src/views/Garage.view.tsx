@@ -5,9 +5,10 @@ import useGarage from '../hooks/useGarage';
 import ChevronBackwards from '../assets/svg/chevron_backwards.svg?react';
 import ChevronForwards from '../assets/svg/chevron_forwards.svg?react';
 import '../styles/garage.css';
+import UpdateCarComponent from '../components/UpdateCarForm.component';
 
 export default function GarageView() {
-  const { cars, selectedCar } = useGarage();
+  const { cars } = useGarage();
   const [page, setPage] = useState(1);
 
   return (
@@ -18,18 +19,7 @@ export default function GarageView() {
           <button type="button">reset</button>
         </div>
         <CreateCarComponent />
-        <div className="garage-update-form">
-          <input
-            type="text"
-            name="upd-name"
-            placeholder="brand"
-            disabled={selectedCar === null}
-          />
-          <input type="color" name="upd-color" disabled />
-          <button type="button" disabled>
-            update
-          </button>
-        </div>
+        <UpdateCarComponent />
         <button type="button" className="garage-generate-btn">
           generate cars
         </button>

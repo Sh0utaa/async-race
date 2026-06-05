@@ -87,6 +87,18 @@ const garageSlice = createSlice({
         (state, action: PayloadAction<number>) => {
           state.cars = state.cars.filter((car) => car.id !== action.payload);
         },
+      )
+      .addCase(
+        handleUpdateCar.fulfilled,
+        (state, action: PayloadAction<Car>) => {
+          const updatedCar = action.payload;
+
+          state.cars = state.cars.map((car) =>
+            car.id === updatedCar.id ? updatedCar : car,
+          );
+
+          state.selectedCar = null;
+        },
       );
   },
 });
