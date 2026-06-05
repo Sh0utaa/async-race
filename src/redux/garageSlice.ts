@@ -15,12 +15,14 @@ import {
 interface GarageState {
   cars: Car[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  selectedCar: Car | null;
   error: string | null;
 }
 
 const initialState: GarageState = {
   cars: [],
   status: 'idle',
+  selectedCar: null,
   error: null,
 };
 
@@ -56,7 +58,11 @@ export const handleUpdateCar = createAsyncThunk(
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedCar: (state, action: PayloadAction<Car | null>) => {
+      state.selectedCar = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCars.pending, (state) => {
@@ -85,4 +91,5 @@ const garageSlice = createSlice({
   },
 });
 
+export const { setSelectedCar } = garageSlice.actions;
 export default garageSlice.reducer;

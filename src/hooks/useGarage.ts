@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
-import type { CreateCarDto, UpdateCarDto } from '../utils/types';
+import type { Car, CreateCarDto, UpdateCarDto } from '../utils/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   fetchCars,
   handleCreateCar,
   handleDeleteCar,
   handleUpdateCar,
+  setSelectedCar,
 } from '../redux/garageSlice';
 
 export default function useGarage() {
   const dispatch = useAppDispatch();
 
-  const { cars } = useAppSelector((state) => state.garage);
+  const { cars, selectedCar } = useAppSelector((state) => state.garage);
 
   useEffect(() => {
     dispatch(fetchCars());
@@ -29,5 +30,16 @@ export default function useGarage() {
     dispatch(handleUpdateCar({ id, car }));
   };
 
-  return { cars, onCreateCar, onDeleteCar, onUpdateCar };
+  const onSelectCar = (car: Car | null) => {
+    dispatch(setSelectedCar(car));
+  };
+
+  return {
+    cars,
+    onCreateCar,
+    onDeleteCar,
+    onUpdateCar,
+    onSelectCar,
+    selectedCar,
+  };
 }

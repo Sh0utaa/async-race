@@ -8,11 +8,24 @@ interface RaceLaneProps {
 }
 
 export default function RaceLaneComponent({ car }: RaceLaneProps) {
-  const { onDeleteCar } = useGarage();
+  const { onDeleteCar, onSelectCar, selectedCar } = useGarage();
+  const isSelected = selectedCar?.id === car.id;
+
   return (
     <div className="race-lane">
       <div className="lane-meta-controls">
-        <button type="button">select</button>
+        <button
+          type="button"
+          onClick={() => {
+            if (isSelected) {
+              onSelectCar(null);
+            } else {
+              onSelectCar(car);
+            }
+          }}
+        >
+          {isSelected ? 'deselect' : 'select'}
+        </button>
         <button type="button" onClick={() => onDeleteCar(car.id)}>
           remove
         </button>
