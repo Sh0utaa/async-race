@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import useGarage from '../hooks/useGarage';
-import type { UpdateCarDto } from '../utils/types';
+import useGarage from '../../hooks/useGarage';
+import type { UpdateCarDto } from '../../utils/types';
 
 export default function CarUpdatePanel() {
   const { selectedCar, onUpdateCar } = useGarage();

@@ -1,7 +1,7 @@
-import ChevronBackwards from '../assets/svg/chevron_backwards.svg?react';
-import ChevronForwards from '../assets/svg/chevron_forwards.svg?react';
-import useGarage from '../hooks/useGarage';
-import usePage from '../hooks/usePages';
+import ChevronBackwards from '../../assets/svg/chevron_backwards.svg?react';
+import ChevronForwards from '../../assets/svg/chevron_forwards.svg?react';
+import useGarage from '../../hooks/useGarage';
+import usePage from '../../hooks/usePages';
 
 export default function PaginationComponent() {
   const { totalCount } = useGarage();

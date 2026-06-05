@@ -36,7 +36,6 @@ const initialState: GarageState = {
 export const fetchCars = createAsyncThunk(
   'garage/fetchCars',
   async (page: number) => {
-    // TODO Add Pagination State
     const data = await getAllCars(page);
     return data;
   },

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { CreateCarDto } from '../utils/types';
-import useGarage from '../hooks/useGarage';
+import type { CreateCarDto } from '../../utils/types';
+import useGarage from '../../hooks/useGarage';
 
 export default function CarCreationPanel() {
   const { onCreateCar } = useGarage();

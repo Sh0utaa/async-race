@@ -1,5 +1,5 @@
-import CarIcon from '../assets/svg/car.svg?react';
-import type { Car } from '../utils/types';
+import CarIcon from '../../assets/svg/car.svg?react';
+import type { Car } from '../../utils/types';
 
 interface CarComponentProps {
   car: Car;

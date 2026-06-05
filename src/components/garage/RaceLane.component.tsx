@@ -1,7 +1,7 @@
-import type { Car } from '../utils/types';
-import '../styles/racelane.css';
+import type { Car } from '../../utils/types';
+import '../../styles/racelane.css';
 import CarComponent from './Car.component';
-import useGarage from '../hooks/useGarage';
+import useGarage from '../../hooks/useGarage';
 
 interface RaceLaneProps {
   car: Car;

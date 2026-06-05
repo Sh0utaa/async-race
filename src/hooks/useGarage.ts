@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
-import type { Car, CreateCarDto, UpdateCarDto } from '../utils/types';
+import {
+  listOfCars,
+  listOfColors,
+  type Car,
+  type CreateCarDto,
+  type UpdateCarDto,
+} from '../utils/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   fetchCars,
@@ -39,6 +45,21 @@ export default function useGarage() {
     dispatch(setSelectedCar(car));
   };
 
+  const generateCars = () => {
+    for (let i: number = 0; i < 100; i++) {
+      const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
+      const color =
+        listOfColors[Math.floor(Math.random() * listOfColors.length)]!;
+
+      const car: CreateCarDto = {
+        name: brand,
+        color,
+      };
+
+      dispatch(handleCreateCar(car));
+    }
+  };
+
   return {
     cars,
     onCreateCar,
@@ -47,5 +68,6 @@ export default function useGarage() {
     onSelectCar,
     selectedCar,
     totalCount,
+    generateCars,
   };
 }

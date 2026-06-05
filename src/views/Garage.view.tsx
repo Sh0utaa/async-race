@@ -1,9 +1,10 @@
-import RaceLaneComponent from '../components/RaceLane.component';
+import RaceLaneComponent from '../components/garage/RaceLane.component';
 import useGarage from '../hooks/useGarage';
-import CarCreationPanel from '../components/CarCreationPanel.component';
-import CarUpdatePanel from '../components/CarUpdatePanel.component';
-import PaginationComponent from '../components/Pagination.component';
+import CarCreationPanel from '../components/garage/CarCreationPanel.component';
+import CarUpdatePanel from '../components/garage/CarUpdatePanel.component';
+import PaginationComponent from '../components/garage/Pagination.component';
 import '../styles/garage.css';
+import RaceControlPanel from '../components/garage/RaceControlPanel.component';
 
 export default function GarageView() {
   const { cars } = useGarage();
@@ -17,9 +18,7 @@ export default function GarageView() {
         </div>
         <CarCreationPanel />
         <CarUpdatePanel />
-        <button type="button" className="garage-generate-btn">
-          generate cars
-        </button>
+        <RaceControlPanel />
       </div>
       <div className="garage-lanes">
         {cars.map((car) => (
