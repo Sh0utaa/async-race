@@ -30,6 +30,7 @@ export default function useGarage() {
   }, [dispatch, garagePage]);
 
   const onCreateCar = (car: CreateCarDto) => {
+    if (car.name.trim().length === 0) return;
     dispatch(handleCreateCar(car));
   };
 
@@ -38,6 +39,10 @@ export default function useGarage() {
   };
 
   const onUpdateCar = (id: number, car: UpdateCarDto) => {
+    if (car.name?.trim().length === 0) {
+      dispatch(setSelectedCar(null));
+      return;
+    }
     dispatch(handleUpdateCar({ id, car }));
   };
 
@@ -45,7 +50,7 @@ export default function useGarage() {
     dispatch(setSelectedCar(car));
   };
 
-  const generateCars = () => {
+  const generateCars = async () => {
     for (let i: number = 0; i < 100; i++) {
       const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
       const color =
@@ -56,7 +61,8 @@ export default function useGarage() {
         color,
       };
 
-      dispatch(handleCreateCar(car));
+      // eslint-disable-next-line no-await-in-loop
+      await dispatch(handleCreateCar(car));
     }
   };
 
