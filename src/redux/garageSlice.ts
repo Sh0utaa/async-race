@@ -90,18 +90,12 @@ const garageSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch cars';
       })
-      .addCase(
-        handleCreateCar.fulfilled,
-        (state, action: PayloadAction<Car>) => {
-          state.cars.push(action.payload);
-        },
-      )
-      .addCase(
-        handleDeleteCar.fulfilled,
-        (state, action: PayloadAction<number>) => {
-          state.cars = state.cars.filter((car) => car.id !== action.payload);
-        },
-      )
+      .addCase(handleCreateCar.fulfilled, () => {
+        // state.cars.push(action.payload);
+      })
+      .addCase(handleDeleteCar.fulfilled, () => {
+        // state.cars = state.cars.filter((car) => car.id !== action.payload);
+      })
       .addCase(
         handleUpdateCar.fulfilled,
         (state, action: PayloadAction<Car>) => {

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   listOfCars,
   listOfColors,
@@ -25,17 +24,23 @@ export default function useGarage() {
 
   const { garagePage } = usePage();
 
-  useEffect(() => {
-    dispatch(fetchCars(garagePage));
-  }, [dispatch, garagePage]);
+  // useEffect(() => {
+  //   const promise = dispatch(fetchCars(garagePage));
 
-  const onCreateCar = (car: CreateCarDto) => {
+  //   return () => {
+  //     promise.abort();
+  //   };
+  // }, [dispatch, garagePage]);
+
+  const onCreateCar = async (car: CreateCarDto) => {
     if (car.name.trim().length === 0) return;
-    dispatch(handleCreateCar(car));
+    await dispatch(handleCreateCar(car));
+    dispatch(fetchCars(garagePage));
   };
 
-  const onDeleteCar = (id: number) => {
-    dispatch(handleDeleteCar(id));
+  const onDeleteCar = async (id: number) => {
+    await dispatch(handleDeleteCar(id)).unwrap();
+    dispatch(fetchCars(garagePage));
   };
 
   const onUpdateCar = (id: number, car: UpdateCarDto) => {
@@ -62,7 +67,7 @@ export default function useGarage() {
       };
 
       // eslint-disable-next-line no-await-in-loop
-      await dispatch(handleCreateCar(car));
+      await onCreateCar(car);
     }
   };
 

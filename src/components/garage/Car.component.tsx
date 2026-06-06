@@ -8,7 +8,7 @@ interface CarComponentProps {
 export default function CarComponent({ car }: CarComponentProps) {
   return (
     <div>
-      <CarIcon style={{ width: '70px', height: 'auto', color: car.color }} />
+      <CarIcon style={{ width: '60px', height: 'auto', color: car.color }} />
     </div>
   );
 }

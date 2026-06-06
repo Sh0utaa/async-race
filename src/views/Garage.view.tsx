@@ -1,13 +1,28 @@
+import { useEffect } from 'react';
 import RaceLaneComponent from '../components/garage/RaceLane.component';
-import useGarage from '../hooks/useGarage';
 import CarCreationPanel from '../components/garage/CarCreationPanel.component';
 import CarUpdatePanel from '../components/garage/CarUpdatePanel.component';
 import PaginationComponent from '../components/garage/Pagination.component';
 import '../styles/garage.css';
 import RaceControlPanel from '../components/garage/RaceControlPanel.component';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import usePage from '../hooks/usePages';
+import { fetchCars } from '../redux/garageSlice';
 
 export default function GarageView() {
-  const { cars } = useGarage();
+  const dispatch = useAppDispatch();
+
+  const { cars } = useAppSelector((state) => state.garage);
+
+  const { garagePage } = usePage();
+
+  useEffect(() => {
+    const promise = dispatch(fetchCars(garagePage));
+
+    return () => {
+      promise.abort();
+    };
+  }, [dispatch, garagePage]);
 
   return (
     <div className="garage">
