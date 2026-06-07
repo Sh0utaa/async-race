@@ -57,7 +57,7 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
       <div className="lane-track">
         <div className="car-wrapper">
           <span className="car-name">{car.name}</span>
-          <CarComponent car={car} />
+          <CarComponent car={car} engine={engine} />
         </div>
         <div className="engine">
           <ul>
@@ -65,6 +65,7 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
             <li>Status: {engine.status}</li>
             <li>Velocity: {engine.velocity}</li>
             <li>Distance: {engine.distance}</li>
+            <li>Duration: {engine.duration}</li>
           </ul>
         </div>
       </div>

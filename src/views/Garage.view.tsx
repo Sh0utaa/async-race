@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import RaceLaneComponent from '../components/garage/RaceLane.component';
 import CarCreationPanel from '../components/garage/CarCreationPanel.component';
@@ -27,6 +28,11 @@ export default function GarageView() {
 
   return (
     <div className="garage">
+      <nav>
+        <Link to="/winners">Winners</Link>
+        <br />
+        <Link to="/garage">Garage</Link>
+      </nav>
       <div className="garage-controls">
         <div className="garage-race-actions">
           <button type="button">race</button>

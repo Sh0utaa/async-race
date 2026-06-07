@@ -1,3 +1,13 @@
+import { Link } from 'react-router-dom';
+
 export default function WinnersView() {
-  return <h1>Winners View</h1>;
+  return (
+    <div className="winners">
+      <nav>
+        <Link to="/winners">Winners</Link>
+        <br />
+        <Link to="/garage">Garage</Link>
+      </nav>
+    </div>
+  );
 }

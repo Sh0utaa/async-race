@@ -38,6 +38,7 @@ const engineSlice = createSlice({
         status: 'stopped',
         velocity: 0,
         distance: 0,
+        duration: 0,
       };
     },
     updateEngine: (
@@ -60,6 +61,7 @@ const engineSlice = createSlice({
               status: 'stopped',
               velocity: 0,
               distance: 0,
+              duration: 0,
             };
         });
       })
@@ -75,6 +77,7 @@ const engineSlice = createSlice({
             state[carId].status = 'started';
             state[carId].velocity = velocity;
             state[carId].distance = distance;
+            state[carId].duration = Math.round(distance / velocity);
           }
         },
       )
@@ -87,6 +90,7 @@ const engineSlice = createSlice({
             state[carId].status = 'stopped';
             state[carId].velocity = 0;
             state[carId].distance = 0;
+            state[carId].duration = 0;
           }
         },
       );

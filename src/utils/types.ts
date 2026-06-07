@@ -2,8 +2,6 @@ export interface Car {
   name: string;
   color: string;
   id: number;
-  velocity: number;
-  distance: number;
 }
 
 export type Engine = {
@@ -11,6 +9,7 @@ export type Engine = {
   status: EngineStatus;
   velocity: number;
   distance: number;
+  duration: number;
 };
 
 export type EngineStatus =

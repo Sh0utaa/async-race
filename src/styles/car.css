@@ -1,0 +1,16 @@
+.car-object {
+  transform: translateX(0);
+}
+
+.car-object.animate {
+  animation: myRace var(--race-duration, 2s) ease-in-out forwards;
+}
+
+@keyframes myRace {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(300px);
+  }
+}
