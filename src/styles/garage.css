@@ -5,6 +5,12 @@
   padding: 16px;
 }
 
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .garage-controls {
   display: flex;
   align-items: center;

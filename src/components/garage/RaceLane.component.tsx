@@ -1,16 +1,20 @@
-import type { Car } from '../../utils/types';
+import type { Car, Engine } from '../../utils/types';
 import '../../styles/racelane.css';
 import CarComponent from './Car.component';
 import useGarage from '../../hooks/useGarage';
+import useEngine from '../../hooks/useEngine';
 
 interface RaceLaneProps {
   car: Car;
+  engine: Engine;
 }
 
-export default function RaceLaneComponent({ car }: RaceLaneProps) {
+export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
   const { onDeleteCar, onSelectCar, selectedCar } = useGarage();
+  const { onEngineStart, onEngineStop } = useEngine();
   const isSelected = selectedCar?.id === car.id;
 
+  if (!engine) return null;
   return (
     <div className="race-lane">
       <div className="lane-meta-controls">
@@ -31,15 +35,38 @@ export default function RaceLaneComponent({ car }: RaceLaneProps) {
         </button>
       </div>
       <div className="lane-race-controls">
-        <button type="button">A</button>
-        <button type="button">B</button>
+        <button
+          type="button"
+          onClick={() => {
+            onEngineStart(car.id);
+          }}
+          disabled={engine.status !== 'stopped'}
+        >
+          A
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            onEngineStop(car.id);
+          }}
+          disabled={engine.status === 'stopped'}
+        >
+          B
+        </button>
       </div>
       <div className="lane-track">
         <div className="car-wrapper">
           <span className="car-name">{car.name}</span>
           <CarComponent car={car} />
         </div>
-        true
+        <div className="engine">
+          <ul>
+            <li>carId: {engine.carId}</li>
+            <li>Status: {engine.status}</li>
+            <li>Velocity: {engine.velocity}</li>
+            <li>Distance: {engine.distance}</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

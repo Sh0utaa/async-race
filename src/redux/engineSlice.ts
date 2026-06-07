@@ -1,11 +1,32 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Engine, EngineStatus } from '../utils/types';
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
+import type { Engine, EngineData, EngineStatus } from '../utils/types';
 import { fetchCars, handleDeleteCar } from './garageSlice';
+import { startEngine, stopEngine } from '../services/engineService';
 
 type EngineState = Record<number, Engine>;
 
 const initialState: EngineState = {};
+
+export const handleEngineStart = createAsyncThunk(
+  'engine/startEngine',
+  async (id: number): Promise<EngineData> => {
+    const data = await startEngine(id);
+    return data;
+  },
+);
+
+export const handleEngineStop = createAsyncThunk(
+  'engine/stopEngine',
+  async (id: number): Promise<EngineData> => {
+    const data = await stopEngine(id);
+    return data;
+  },
+);
 
 const engineSlice = createSlice({
   name: 'engine',
@@ -44,7 +65,31 @@ const engineSlice = createSlice({
       })
       .addCase(handleDeleteCar.fulfilled, (state, action) => {
         delete state[action.payload];
-      });
+      })
+      .addCase(
+        handleEngineStart.fulfilled,
+        (state, action: PayloadAction<EngineData>) => {
+          const { carId, velocity, distance } = action.payload;
+
+          if (state[carId] !== undefined) {
+            state[carId].status = 'started';
+            state[carId].velocity = velocity;
+            state[carId].distance = distance;
+          }
+        },
+      )
+      .addCase(
+        handleEngineStop.fulfilled,
+        (state, action: PayloadAction<EngineData>) => {
+          const { carId } = action.payload;
+
+          if (state[carId] !== undefined) {
+            state[carId].status = 'stopped';
+            state[carId].velocity = 0;
+            state[carId].distance = 0;
+          }
+        },
+      );
   },
 });
 

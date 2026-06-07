@@ -17,9 +17,6 @@ export default function GarageView() {
 
   const { garagePage } = usePage();
 
-  console.log(cars);
-  console.log(engines);
-
   useEffect(() => {
     const promise = dispatch(fetchCars(garagePage));
 
@@ -40,9 +37,11 @@ export default function GarageView() {
         <RaceControlPanel />
       </div>
       <div className="garage-lanes">
-        {cars.map((car) => (
-          <RaceLaneComponent key={car.id} car={car} />
-        ))}
+        {cars.map((car) => {
+          const engine = engines[car.id];
+          if (!engine) return null;
+          return <RaceLaneComponent key={car.id} car={car} engine={engine} />;
+        })}
       </div>
       <PaginationComponent />
     </div>
