@@ -13,8 +13,12 @@ export default function GarageView() {
   const dispatch = useAppDispatch();
 
   const { cars } = useAppSelector((state) => state.garage);
+  const engines = useAppSelector((state) => state.engine);
 
   const { garagePage } = usePage();
+
+  console.log(cars);
+  console.log(engines);
 
   useEffect(() => {
     const promise = dispatch(fetchCars(garagePage));

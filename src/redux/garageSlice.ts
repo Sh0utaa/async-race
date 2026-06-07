@@ -20,7 +20,6 @@ import {
 interface GarageState {
   cars: Car[];
   totalCount: number;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   selectedCar: Car | null;
   error: string | null;
 }
@@ -28,7 +27,6 @@ interface GarageState {
 const initialState: GarageState = {
   cars: [],
   totalCount: 0,
-  status: 'idle',
   selectedCar: null,
   error: null,
 };
@@ -75,19 +73,15 @@ const garageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCars.pending, (state) => {
-        state.status = 'loading';
-      })
+      .addCase(fetchCars.pending, () => {})
       .addCase(
         fetchCars.fulfilled,
         (state, action: PayloadAction<CarsResponse>) => {
-          state.status = 'succeeded';
           state.cars = action.payload.cars;
           state.totalCount = action.payload.totalCount;
         },
       )
       .addCase(fetchCars.rejected, (state, action) => {
-        state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch cars';
       })
       .addCase(handleCreateCar.fulfilled, () => {

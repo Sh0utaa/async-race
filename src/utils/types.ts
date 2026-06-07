@@ -2,7 +2,23 @@ export interface Car {
   name: string;
   color: string;
   id: number;
+  velocity: number;
+  distance: number;
 }
+
+export type Engine = {
+  carId: number;
+  status: EngineStatus;
+  velocity: number;
+  distance: number;
+};
+
+export type EngineStatus =
+  | 'stopped'
+  | 'started'
+  | 'driving'
+  | 'broken'
+  | 'finished';
 
 export interface CarsResponse {
   cars: Car[];
@@ -17,6 +33,11 @@ export interface CreateCarDto {
 export interface UpdateCarDto {
   name?: string;
   color?: string;
+}
+
+export interface EngineData {
+  velocity: number;
+  distance: number;
 }
 
 export const listOfCars: string[] = [

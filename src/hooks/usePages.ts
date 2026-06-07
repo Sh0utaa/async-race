@@ -1,8 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import {
-  decrementGaragePage,
-  incrementGaragePage,
-} from '../redux/paginationSlice';
+import { decrementGaragePage, incrementGaragePage } from '../redux/pageSlice';
 
 export default function usePage() {
   const dispatch = useAppDispatch();

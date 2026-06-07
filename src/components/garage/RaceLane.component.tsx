@@ -39,6 +39,7 @@ export default function RaceLaneComponent({ car }: RaceLaneProps) {
           <span className="car-name">{car.name}</span>
           <CarComponent car={car} />
         </div>
+        true
       </div>
     </div>
   );
