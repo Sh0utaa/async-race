@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   listOfCars,
   listOfColors,
@@ -31,6 +32,11 @@ export default function useGarage() {
   //     promise.abort();
   //   };
   // }, [dispatch, garagePage]);
+
+  const fetchGarageCars = useCallback(
+    (page: number) => dispatch(fetchCars(page)),
+    [dispatch],
+  );
 
   const onCreateCar = async (car: CreateCarDto) => {
     if (car.name.trim().length === 0) return;
@@ -80,5 +86,6 @@ export default function useGarage() {
     selectedCar,
     totalCount,
     generateCars,
+    fetchGarageCars,
   };
 }

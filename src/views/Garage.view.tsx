@@ -6,25 +6,23 @@ import CarUpdatePanel from '../components/garage/CarUpdatePanel.component';
 import PaginationComponent from '../components/garage/Pagination.component';
 import '../styles/garage.css';
 import RaceControlPanel from '../components/garage/RaceControlPanel.component';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import usePage from '../hooks/usePages';
-import { fetchCars } from '../redux/garageSlice';
+import useGarage from '../hooks/useGarage';
+import useEngine from '../hooks/useEngine';
+import GaragePanelComponent from '../components/garage/GaragePanel.component';
 
 export default function GarageView() {
-  const dispatch = useAppDispatch();
-
-  const { cars } = useAppSelector((state) => state.garage);
-  const engines = useAppSelector((state) => state.engine);
-
+  const { engines } = useEngine();
+  const { cars, fetchGarageCars } = useGarage();
   const { garagePage } = usePage();
 
   useEffect(() => {
-    const promise = dispatch(fetchCars(garagePage));
+    const promise = fetchGarageCars(garagePage);
 
     return () => {
       promise.abort();
     };
-  }, [dispatch, garagePage]);
+  }, [fetchGarageCars, garagePage]);
 
   return (
     <div className="garage">
@@ -35,8 +33,7 @@ export default function GarageView() {
       </nav>
       <div className="garage-controls">
         <div className="garage-race-actions">
-          <button type="button">race</button>
-          <button type="button">reset</button>
+          <GaragePanelComponent cars={cars} />
         </div>
         <CarCreationPanel />
         <CarUpdatePanel />
