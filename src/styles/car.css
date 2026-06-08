@@ -1,5 +1,7 @@
 .car-object {
   transform: translateX(0);
+  flex-shrink: 0;
+  width: max-content;
 }
 
 .car-object.animate {
@@ -11,6 +13,6 @@
     transform: translateX(0);
   }
   to {
-    transform: translateX(300px);
+    transform: translateX(calc(100cqw - 100%));
   }
 }

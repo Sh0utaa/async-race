@@ -53,6 +53,7 @@ svg {
   flex: 1;
   display: flex;
   align-items: center;
+  container-type: inline-size;
 }
 
 .lane-track svg {
