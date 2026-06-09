@@ -25,6 +25,10 @@ export interface EngineData {
   distance: number;
 }
 
+export interface DriveResponse {
+  success: boolean;
+}
+
 export interface CarsResponse {
   cars: Car[];
   totalCount: number;

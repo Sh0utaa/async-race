@@ -37,7 +37,7 @@ export default function GaragePanelComponent({ cars }: GaragePanelProps) {
     } catch (error) {
       console.error('engine(s) failed to stop: ', error);
     } finally {
-      setIsResetting(true);
+      setIsResetting(false);
     }
   };
 

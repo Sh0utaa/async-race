@@ -1,4 +1,5 @@
 import {
+  handleEngineDrive,
   handleEngineStart,
   handleEngineStop,
   updateEngine,
@@ -22,6 +23,17 @@ export default function useEngine() {
     dispatch(handleEngineStop(id)).unwrap();
   };
 
+  const onEngineDrive = (id: number) => {
+    dispatch(handleEngineDrive(id));
+  };
+
   const getEngine = (carId: number) => engines[carId];
-  return { engines, getEngine, onEngineUpdate, onEngineStart, onEngineStop };
+  return {
+    engines,
+    getEngine,
+    onEngineUpdate,
+    onEngineStart,
+    onEngineStop,
+    onEngineDrive,
+  };
 }

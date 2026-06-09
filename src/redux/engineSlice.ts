@@ -4,9 +4,18 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import type { Engine, EngineData, EngineStatus } from '../utils/types';
+import type {
+  DriveResponse,
+  Engine,
+  EngineData,
+  EngineStatus,
+} from '../utils/types';
 import { fetchCars, handleDeleteCar } from './garageSlice';
-import { startEngine, stopEngine } from '../services/engineService';
+import {
+  driveEngine,
+  startEngine,
+  stopEngine,
+} from '../services/engineService';
 
 type EngineState = Record<number, Engine>;
 
@@ -25,6 +34,14 @@ export const handleEngineStop = createAsyncThunk(
   async (id: number): Promise<EngineData> => {
     const data = await stopEngine(id);
     return data;
+  },
+);
+
+export const handleEngineDrive = createAsyncThunk(
+  'engine/driveEngine',
+  async (id: number) => {
+    const data: DriveResponse = await driveEngine(id);
+    return { id, data };
   },
 );
 
@@ -93,7 +110,19 @@ const engineSlice = createSlice({
             state[carId].duration = 0;
           }
         },
-      );
+      )
+      .addCase(handleEngineDrive.pending, (state, action) => {
+        const id = action.meta.arg;
+        if (state[id]) state[id].status = 'driving';
+      })
+      .addCase(handleEngineDrive.fulfilled, (state, action) => {
+        const id = action.meta.arg;
+        if (state[id]) state[id].status = 'finished';
+      })
+      .addCase(handleEngineDrive.rejected, (state, action) => {
+        const id = action.meta.arg;
+        if (state[id]) state[id].status = 'broken';
+      });
   },
 });
 

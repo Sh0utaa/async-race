@@ -35,3 +35,14 @@ export const stopEngine = async (id: number): Promise<EngineData> => {
     distance: data.distance,
   };
 };
+
+export const driveEngine = async (id: number) => {
+  const response = await fetch(`${ENGINE_URL}/?id=${id}&status=drive`, {
+    method: 'PATCH',
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to drive engine. Status ${response.status}`);
+  }
+
+  return response.json();
+};

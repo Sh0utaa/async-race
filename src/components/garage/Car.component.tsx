@@ -8,7 +8,7 @@ interface CarComponentProps {
 }
 
 export default function CarComponent({ car, engine }: CarComponentProps) {
-  const carClassName = `car-object ${engine.status === 'started' ? 'animate' : ''}`;
+  const carClassName = `car-object ${engine.status === 'driving' ? 'animate' : ''}`;
 
   return (
     <div
