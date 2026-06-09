@@ -13,7 +13,7 @@ import GaragePanelComponent from '../components/garage/GaragePanel.component';
 
 export default function GarageView() {
   const { engines } = useEngine();
-  const { cars, fetchGarageCars } = useGarage();
+  const { cars, fetchGarageCars, carsUpdatedTrigger } = useGarage();
   const { garagePage } = usePage();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function GarageView() {
     return () => {
       promise.abort();
     };
-  }, [fetchGarageCars, garagePage]);
+  }, [fetchGarageCars, garagePage, carsUpdatedTrigger]);
 
   return (
     <div className="garage">

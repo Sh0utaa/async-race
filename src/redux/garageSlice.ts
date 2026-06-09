@@ -4,11 +4,13 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import type {
-  Car,
-  CarsResponse,
-  CreateCarDto,
-  UpdateCarDto,
+import {
+  listOfCars,
+  listOfColors,
+  type Car,
+  type CarsResponse,
+  type CreateCarDto,
+  type UpdateCarDto,
 } from '../utils/types';
 import {
   createCar,
@@ -22,6 +24,7 @@ interface GarageState {
   totalCount: number;
   selectedCar: Car | null;
   error: string | null;
+  carsUpdatedTrigger: boolean;
 }
 
 const initialState: GarageState = {
@@ -29,6 +32,7 @@ const initialState: GarageState = {
   totalCount: 0,
   selectedCar: null,
   error: null,
+  carsUpdatedTrigger: false,
 };
 
 export const fetchCars = createAsyncThunk(
@@ -63,6 +67,33 @@ export const handleUpdateCar = createAsyncThunk(
   },
 );
 
+export const handleGenerateCars = createAsyncThunk(
+  'garage/generateCars',
+  async () => {
+    const promises = [];
+
+    for (let i = 0; i < 100; i++) {
+      const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
+      const color =
+        listOfColors[Math.floor(Math.random() * listOfColors.length)]!;
+
+      const car: CreateCarDto = {
+        name: brand,
+        color,
+      };
+
+      promises.push(createCar(car));
+    }
+
+    try {
+      await Promise.all(promises);
+      console.log('Successfully generated 100 random cars concurrently!');
+    } catch (error) {
+      console.error('Something went wrong generating the batch:', error);
+    }
+  },
+);
+
 const garageSlice = createSlice({
   name: 'garage',
   initialState,
@@ -84,12 +115,6 @@ const garageSlice = createSlice({
       .addCase(fetchCars.rejected, (state, action) => {
         state.error = action.error.message || 'Failed to fetch cars';
       })
-      .addCase(handleCreateCar.fulfilled, () => {
-        // state.cars.push(action.payload);
-      })
-      .addCase(handleDeleteCar.fulfilled, () => {
-        // state.cars = state.cars.filter((car) => car.id !== action.payload);
-      })
       .addCase(
         handleUpdateCar.fulfilled,
         (state, action: PayloadAction<Car>) => {
@@ -101,7 +126,10 @@ const garageSlice = createSlice({
 
           state.selectedCar = null;
         },
-      );
+      )
+      .addCase(handleGenerateCars.fulfilled, (state) => {
+        state.carsUpdatedTrigger = !state.carsUpdatedTrigger;
+      });
   },
 });
 

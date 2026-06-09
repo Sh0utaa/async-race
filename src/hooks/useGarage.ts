@@ -1,16 +1,11 @@
 import { useCallback } from 'react';
-import {
-  listOfCars,
-  listOfColors,
-  type Car,
-  type CreateCarDto,
-  type UpdateCarDto,
-} from '../utils/types';
+import { type Car, type CreateCarDto, type UpdateCarDto } from '../utils/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   fetchCars,
   handleCreateCar,
   handleDeleteCar,
+  handleGenerateCars,
   handleUpdateCar,
   setSelectedCar,
 } from '../redux/garageSlice';
@@ -19,7 +14,7 @@ import usePage from './usePages';
 export default function useGarage() {
   const dispatch = useAppDispatch();
 
-  const { cars, selectedCar, totalCount } = useAppSelector(
+  const { cars, selectedCar, totalCount, carsUpdatedTrigger } = useAppSelector(
     (state) => state.garage,
   );
 
@@ -61,20 +56,20 @@ export default function useGarage() {
     dispatch(setSelectedCar(car));
   };
 
-  const generateCars = async () => {
-    for (let i: number = 0; i < 100; i++) {
-      const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
-      const color =
-        listOfColors[Math.floor(Math.random() * listOfColors.length)]!;
+  const onCarGeneration = async () => {
+    dispatch(handleGenerateCars());
 
-      const car: CreateCarDto = {
-        name: brand,
-        color,
-      };
-
-      // eslint-disable-next-line no-await-in-loop
-      await onCreateCar(car);
-    }
+    // for (let i: number = 0; i < 100; i++) {
+    //   const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
+    //   const color =
+    //     listOfColors[Math.floor(Math.random() * listOfColors.length)]!;
+    //   const car: CreateCarDto = {
+    //     name: brand,
+    //     color,
+    //   };
+    //   // eslint-disable-next-line no-await-in-loop
+    //   await onCreateCar(car);
+    // }
   };
 
   return {
@@ -85,7 +80,8 @@ export default function useGarage() {
     onSelectCar,
     selectedCar,
     totalCount,
-    generateCars,
+    carsUpdatedTrigger,
+    onCarGeneration,
     fetchGarageCars,
   };
 }

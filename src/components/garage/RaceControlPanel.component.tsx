@@ -1,12 +1,12 @@
 import useGarage from '../../hooks/useGarage';
 
 export default function RaceControlPanel() {
-  const { generateCars } = useGarage();
+  const { onCarGeneration } = useGarage();
   return (
     <button
       type="button"
       className="garage-generate-btn"
-      onClick={generateCars}
+      onClick={onCarGeneration}
     >
       generate cars
     </button>
