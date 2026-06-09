@@ -4,8 +4,23 @@
   width: max-content;
 }
 
-.car-object.animate {
+.car-object.driving {
   animation: myRace var(--race-duration, 2s) ease-in-out forwards;
+}
+
+.car-object.finished {
+  animation: myRace var(--race-duration, 2s) ease-in-out forwards;
+  animation-play-state: paused;
+}
+
+.car-object.broken {
+  animation: myRace var(--race-duration, 2s) ease-in-out forwards;
+  animation-play-state: paused;
+}
+
+.car-object.stopped {
+  animation: none;
+  transform: translateX(0);
 }
 
 @keyframes myRace {
