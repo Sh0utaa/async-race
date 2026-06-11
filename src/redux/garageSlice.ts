@@ -14,13 +14,15 @@ import {
 } from '../utils/types';
 import {
   createCar,
-  getAllCars,
+  getCarsByPage,
   deleteCar,
   updateCar,
+  getAllCars,
 } from '../services/garageService';
 
 interface GarageState {
   cars: Car[];
+  allCars: Car[];
   totalCount: number;
   selectedCar: Car | null;
   error: string | null;
@@ -29,16 +31,25 @@ interface GarageState {
 
 const initialState: GarageState = {
   cars: [],
+  allCars: [],
   totalCount: 0,
   selectedCar: null,
   error: null,
   carsUpdatedTrigger: false,
 };
 
+export const fetchAllCars = createAsyncThunk(
+  `garage/fetchAllCars`,
+  async () => {
+    const data = await getAllCars();
+    return data;
+  },
+);
+
 export const fetchCars = createAsyncThunk(
   'garage/fetchCars',
   async (page: number) => {
-    const data = await getAllCars(page);
+    const data = await getCarsByPage(page);
     return data;
   },
 );
@@ -129,6 +140,9 @@ const garageSlice = createSlice({
       )
       .addCase(handleGenerateCars.fulfilled, (state) => {
         state.carsUpdatedTrigger = !state.carsUpdatedTrigger;
+      })
+      .addCase(fetchAllCars.fulfilled, (state, action) => {
+        state.allCars = action.payload.cars;
       });
   },
 });

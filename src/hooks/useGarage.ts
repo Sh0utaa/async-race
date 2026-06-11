@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { type Car, type CreateCarDto, type UpdateCarDto } from '../utils/types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
+  fetchAllCars,
   fetchCars,
   handleCreateCar,
   handleDeleteCar,
@@ -14,9 +15,8 @@ import usePage from './usePages';
 export default function useGarage() {
   const dispatch = useAppDispatch();
 
-  const { cars, selectedCar, totalCount, carsUpdatedTrigger } = useAppSelector(
-    (state) => state.garage,
-  );
+  const { cars, allCars, selectedCar, totalCount, carsUpdatedTrigger } =
+    useAppSelector((state) => state.garage);
 
   const { garagePage } = usePage();
 
@@ -30,6 +30,11 @@ export default function useGarage() {
 
   const fetchGarageCars = useCallback(
     (page: number) => dispatch(fetchCars(page)),
+    [dispatch],
+  );
+
+  const onFetchAllCars = useCallback(
+    () => dispatch(fetchAllCars()),
     [dispatch],
   );
 
@@ -74,6 +79,7 @@ export default function useGarage() {
 
   return {
     cars,
+    allCars,
     onCreateCar,
     onDeleteCar,
     onUpdateCar,
@@ -83,5 +89,6 @@ export default function useGarage() {
     carsUpdatedTrigger,
     onCarGeneration,
     fetchGarageCars,
+    onFetchAllCars,
   };
 }

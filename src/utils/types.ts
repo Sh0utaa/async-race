@@ -17,7 +17,8 @@ export type EngineStatus =
   | 'started'
   | 'driving'
   | 'broken'
-  | 'finished';
+  | 'finished'
+  | 'pending';
 
 export interface EngineData {
   carId: number;

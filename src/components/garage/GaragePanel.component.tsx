@@ -1,11 +1,8 @@
 import useEngine from '../../hooks/useEngine';
-import type { Car } from '../../utils/types';
+import useGarage from '../../hooks/useGarage';
 
-interface GaragePanelProps {
-  cars: Car[];
-}
-
-export default function GaragePanelComponent({ cars }: GaragePanelProps) {
+export default function GaragePanelComponent() {
+  const { cars } = useGarage();
   const { raceAllCars, resetAllCars } = useEngine();
 
   return (

@@ -11,7 +11,7 @@ interface RaceLaneProps {
 
 export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
   const { onDeleteCar, onSelectCar, selectedCar } = useGarage();
-  const { onEngineStart, onEngineStop } = useEngine();
+  const { onEngineStart, onEngineStop, onEngineUpdate } = useEngine();
   const isSelected = selectedCar?.id === car.id;
 
   if (!engine) return null;
@@ -38,6 +38,7 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
         <button
           type="button"
           onClick={() => {
+            onEngineUpdate(car.id, 'pending');
             onEngineStart(car.id);
           }}
           disabled={engine.status !== 'stopped'}

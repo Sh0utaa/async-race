@@ -113,15 +113,18 @@ const engineSlice = createSlice({
       )
       .addCase(handleEngineDrive.pending, (state, action) => {
         const id = action.meta.arg;
-        if (state[id]) state[id].status = 'driving';
+        if (state[id] && state[id].status === 'started')
+          state[id].status = 'driving';
       })
       .addCase(handleEngineDrive.fulfilled, (state, action) => {
         const id = action.meta.arg;
-        if (state[id]) state[id].status = 'finished';
+        if (state[id] && state[id].status === 'driving')
+          state[id].status = 'finished';
       })
       .addCase(handleEngineDrive.rejected, (state, action) => {
         const id = action.meta.arg;
-        if (state[id]) state[id].status = 'broken';
+        if (state[id] && state[id].status === 'driving')
+          state[id].status = 'broken';
       });
   },
 });

@@ -31,6 +31,10 @@ export default function useEngine() {
   const raceAllCars = async (cars: Car[]) => {
     if (cars.length === 0) return;
 
+    cars.forEach((car) => {
+      onEngineUpdate(car.id, 'pending');
+    });
+
     const carPromises = cars.map((car) => dispatch(handleEngineStart(car.id)));
     await Promise.all(carPromises);
 
