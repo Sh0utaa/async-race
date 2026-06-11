@@ -10,6 +10,7 @@ export type Engine = {
   velocity: number;
   distance: number;
   duration: number;
+  driveRequestId?: string;
 };
 
 export type EngineStatus =

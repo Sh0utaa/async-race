@@ -108,23 +108,34 @@ const engineSlice = createSlice({
             state[carId].velocity = 0;
             state[carId].distance = 0;
             state[carId].duration = 0;
+            state[carId].driveRequestId = undefined;
           }
         },
       )
       .addCase(handleEngineDrive.pending, (state, action) => {
         const id = action.meta.arg;
-        if (state[id] && state[id].status === 'started')
+        if (state[id] && state[id].status === 'started') {
           state[id].status = 'driving';
+          state[id].driveRequestId = action.meta.requestId;
+        }
       })
       .addCase(handleEngineDrive.fulfilled, (state, action) => {
         const id = action.meta.arg;
-        if (state[id] && state[id].status === 'driving')
-          state[id].status = 'finished';
+
+        if (!state[id]) return;
+
+        if (state[id].driveRequestId !== action.meta.requestId) return;
+
+        state[id].status = 'finished';
       })
       .addCase(handleEngineDrive.rejected, (state, action) => {
         const id = action.meta.arg;
-        if (state[id] && state[id].status === 'driving')
-          state[id].status = 'broken';
+
+        if (!state[id]) return;
+
+        if (state[id].driveRequestId !== action.meta.requestId) return;
+
+        state[id].status = 'broken';
       });
   },
 });
