@@ -5,28 +5,24 @@ import CarCreationPanel from '../components/garage/CarCreationPanel.component';
 import CarUpdatePanel from '../components/garage/CarUpdatePanel.component';
 import PaginationComponent from '../components/garage/Pagination.component';
 import '../styles/garage.css';
-import RaceControlPanel from '../components/garage/RaceControlPanel.component';
+import CarGenerationPanel from '../components/garage/CarGenerationPanel.component';
 import usePage from '../hooks/usePages';
 import useGarage from '../hooks/useGarage';
 import useEngine from '../hooks/useEngine';
-import GaragePanelComponent from '../components/garage/GaragePanel.component';
+import CarRacePanel from '../components/garage/CarRacePanel';
 
 export default function GarageView() {
   const { engines } = useEngine();
-  const { cars, allCars, onFetchAllCars, fetchGarageCars, carsUpdatedTrigger } =
-    useGarage();
+  const { cars, fetchGarageCars, carsUpdatedTrigger } = useGarage();
   const { garagePage } = usePage();
 
-  console.log(allCars);
   useEffect(() => {
     const garageCarsPromise = fetchGarageCars(garagePage);
-    const allCarsPromise = onFetchAllCars();
 
     return () => {
       garageCarsPromise.abort();
-      allCarsPromise.abort();
     };
-  }, [fetchGarageCars, onFetchAllCars, garagePage, carsUpdatedTrigger]);
+  }, [fetchGarageCars, garagePage, carsUpdatedTrigger]);
 
   return (
     <div className="garage">
@@ -37,11 +33,11 @@ export default function GarageView() {
       </nav>
       <div className="garage-controls">
         <div className="garage-race-actions">
-          <GaragePanelComponent />
+          <CarRacePanel />
         </div>
         <CarCreationPanel />
         <CarUpdatePanel />
-        <RaceControlPanel />
+        <CarGenerationPanel />
       </div>
       <div className="garage-lanes">
         {cars.map((car) => {

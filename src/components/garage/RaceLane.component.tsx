@@ -58,7 +58,9 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
       <div className="lane-track">
         <div className="car-wrapper">
           <span className="car-name">{car.name}</span>
-          <CarComponent car={car} engine={engine} />
+          <div className="">
+            <CarComponent car={car} engine={engine} />
+          </div>
         </div>
         <div className="engine">
           <ul>

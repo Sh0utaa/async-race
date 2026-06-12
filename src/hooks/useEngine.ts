@@ -11,6 +11,15 @@ export default function useEngine() {
   const dispatch = useAppDispatch();
   const engines = useAppSelector((state) => state.engine);
 
+  const isRacing = useAppSelector((state) =>
+    Object.values(state.engine).some(
+      (e) =>
+        e.status === 'driving' ||
+        e.status === 'started' ||
+        e.status === 'pending',
+    ),
+  );
+
   const onEngineUpdate = (id: number, status: EngineStatus) => {
     dispatch(updateEngine({ id, status }));
   };
@@ -53,6 +62,7 @@ export default function useEngine() {
   const getEngine = (carId: number) => engines[carId];
   return {
     engines,
+    isRacing,
     getEngine,
     onEngineUpdate,
     onEngineStart,

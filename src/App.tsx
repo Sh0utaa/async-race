@@ -1,18 +1,44 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import GarageView from './views/Garage.view.tsx';
+import WinnersView from './views/Winners.view.tsx';
 import './styles/app.css';
 
 export default function App() {
+  const location = useLocation();
+
+  const isGarageActive = location.pathname === '/garage';
+  const isWinnersActive = location.pathname === '/winners';
+
+  const isRaceView =
+    location.pathname === '/garage' || location.pathname === '/winners';
+
   return (
     <>
-      <h1>Welcome to Async Race</h1>
-      <ul>
-        <li>
-          <Link to="/garage">garage</Link>
-        </li>
-        <li>
-          <Link to="/winners">winner</Link>
-        </li>
-      </ul>
+      {!isRaceView && (
+        <>
+          <h1>Welcome to Async Race</h1>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/garage">garage</Link>
+              </li>
+              <li>
+                <Link to="/winners">winner</Link>
+              </li>
+            </ul>
+          </nav>
+        </>
+      )}
+
+      <main className="view-container">
+        <div className={`view-pane ${isGarageActive ? 'active' : 'inactive'}`}>
+          <GarageView />
+        </div>
+
+        <div className={`view-pane ${isWinnersActive ? 'active' : 'inactive'}`}>
+          <WinnersView />
+        </div>
+      </main>
     </>
   );
 }

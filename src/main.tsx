@@ -5,14 +5,14 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store.ts';
 
 import App from './App.tsx';
-import GarageView from './views/Garage.view.tsx';
-import WinnersView from './views/Winners.view.tsx';
+// import GarageView from './views/Garage.view.tsx';
+// import WinnersView from './views/Winners.view.tsx';
 import NotFoundView from './views/NotFound.view.tsx';
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
-  { path: '/garage', element: <GarageView /> },
-  { path: '/winners', element: <WinnersView /> },
+  { path: '/garage', element: <App /> },
+  { path: '/winners', element: <App /> },
   { path: '*', element: <NotFoundView /> },
 ]);
 

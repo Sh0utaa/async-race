@@ -1,6 +1,6 @@
 import useGarage from '../../hooks/useGarage';
 
-export default function RaceControlPanel() {
+export default function CarGenerationPanel() {
   const { onCarGeneration } = useGarage();
   return (
     <button
