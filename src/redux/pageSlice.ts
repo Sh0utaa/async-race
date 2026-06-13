@@ -22,8 +22,19 @@ const pageSlice = createSlice({
       if (state.garagePage === 1) return;
       state.garagePage -= 1;
     },
+    incrementWinnersPage: (state) => {
+      state.winnersPage += 1;
+    },
+    decrementWinnersPage: (state) => {
+      state.winnersPage -= 1;
+    },
   },
 });
 
-export const { incrementGaragePage, decrementGaragePage } = pageSlice.actions;
+export const {
+  incrementGaragePage,
+  decrementGaragePage,
+  incrementWinnersPage,
+  decrementWinnersPage,
+} = pageSlice.actions;
 export default pageSlice.reducer;

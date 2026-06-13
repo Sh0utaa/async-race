@@ -46,6 +46,28 @@ export interface UpdateCarDto {
   color?: string;
 }
 
+export interface Winner {
+  id: number;
+  wins: number;
+  time: number;
+}
+
+export interface UpdateWinnerDto {
+  wins: number;
+  time: number;
+}
+
+export interface WinnersResponse {
+  winners: Winner[];
+  totalCount: number;
+}
+
+export interface WinnersConfig {
+  page: number;
+  limit: number;
+  sort: 'id' | 'wins' | 'time';
+  order: 'ASC' | 'DESC';
+}
 export const listOfCars: string[] = [
   'Mercedes',
   'BMW',

@@ -20,7 +20,14 @@ export default function CarComponent({ car, engine }: CarComponentProps) {
         } as React.CSSProperties
       }
     >
-      <CarIcon style={{ width: '60px', height: 'auto', color: car.color }} />
+      <CarIcon
+        style={{
+          width: '60px',
+          height: 'auto',
+          color: car.color,
+          zIndex: 5,
+        }}
+      />
     </div>
   );
 }

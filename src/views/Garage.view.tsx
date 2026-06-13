@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import RaceLaneComponent from '../components/garage/RaceLane.component';
 import CarCreationPanel from '../components/garage/CarCreationPanel.component';
@@ -10,6 +9,7 @@ import usePage from '../hooks/usePages';
 import useGarage from '../hooks/useGarage';
 import useEngine from '../hooks/useEngine';
 import CarRacePanel from '../components/garage/CarRacePanel';
+import Navbar from '../components/Navbar.component';
 
 export default function GarageView() {
   const { engines } = useEngine();
@@ -26,11 +26,7 @@ export default function GarageView() {
 
   return (
     <div className="garage">
-      <nav>
-        <Link to="/winners">Winners</Link>
-        <br />
-        <Link to="/garage">Garage</Link>
-      </nav>
+      <Navbar />
       <div className="garage-controls">
         <div className="garage-race-actions">
           <CarRacePanel />

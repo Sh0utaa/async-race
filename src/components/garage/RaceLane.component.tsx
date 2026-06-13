@@ -55,14 +55,15 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
           B
         </button>
       </div>
-      <div className="lane-track">
-        <div className="car-wrapper">
-          <span className="car-name">{car.name}</span>
-          <div className="">
-            <CarComponent car={car} engine={engine} />
+      <div className="track-container">
+        <div className="lane-track">
+          <div className="car-wrapper">
+            <span className="car-name">{car.name}</span>
+            <div className="">
+              <CarComponent car={car} engine={engine} />
+            </div>
           </div>
-        </div>
-        <div className="engine">
+          {/* <div className="engine">
           <ul>
             <li>carId: {engine.carId}</li>
             <li>Status: {engine.status}</li>
@@ -70,7 +71,9 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
             <li>Distance: {engine.distance}</li>
             <li>Duration: {engine.duration}</li>
           </ul>
+        </div> */}
         </div>
+        <div className="finish-lane" />
       </div>
     </div>
   );

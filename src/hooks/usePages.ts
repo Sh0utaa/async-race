@@ -1,9 +1,14 @@
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { decrementGaragePage, incrementGaragePage } from '../redux/pageSlice';
+import {
+  decrementGaragePage,
+  decrementWinnersPage,
+  incrementGaragePage,
+  incrementWinnersPage,
+} from '../redux/pageSlice';
 
 export default function usePage() {
   const dispatch = useAppDispatch();
-  const { garagePage } = useAppSelector((state) => state.page);
+  const { garagePage, winnersPage } = useAppSelector((state) => state.page);
 
   const onGaragePageIncrement = async (): Promise<void> => {
     dispatch(incrementGaragePage());
@@ -13,5 +18,20 @@ export default function usePage() {
     dispatch(decrementGaragePage());
   };
 
-  return { garagePage, onGaragePageIncrement, onGaragePageDecrement };
+  const onWinnersPageIncrement = async (): Promise<void> => {
+    dispatch(incrementWinnersPage());
+  };
+
+  const onWinnersPageDecrement = async (): Promise<void> => {
+    dispatch(decrementWinnersPage());
+  };
+
+  return {
+    garagePage,
+    winnersPage,
+    onGaragePageIncrement,
+    onGaragePageDecrement,
+    onWinnersPageIncrement,
+    onWinnersPageDecrement,
+  };
 }
