@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import CarIcon from '../assets/svg/car.svg?react';
 import Navbar from '../components/Navbar.component';
 import useWinners from '../hooks/useWinners';
 import { fetchWinners } from '../redux/winnersSlice';
-import type { WinnersConfig } from '../utils/types';
+import type { WinnersConfig, Car } from '../utils/types'; // Assumed Car is exported here
 import { useAppDispatch } from '../redux/hooks';
 import '../styles/winners.css';
 import usePage from '../hooks/usePages';
-import PaginationComponent from '../components/winners/Pagination.component';
+import PaginationComponent from '../components/winners/WinnersPagination.component';
+import useGarage from '../hooks/useGarage';
 
 type SortBy = 'wins' | 'time';
 type SortOrder = 'ASC' | 'DESC';
@@ -15,9 +17,12 @@ export default function WinnersView() {
   const { winnersMap } = useWinners();
   const { winnersPage } = usePage();
   const dispatch = useAppDispatch();
+  const { getCarsByIds } = useGarage();
 
   const [sort, setSort] = useState<SortBy>('wins');
   const [order, setOrder] = useState<SortOrder>('DESC');
+
+  const [carsMap, setCarsMap] = useState<Record<number, Car>>({});
 
   useEffect(() => {
     const args: WinnersConfig = {
@@ -29,17 +34,38 @@ export default function WinnersView() {
     dispatch(fetchWinners(args));
   }, [dispatch, winnersPage, sort, order]);
 
-  const rawWinnersList = Object.values(winnersMap);
+  const winnersList = useMemo(
+    () =>
+      Object.values(winnersMap).sort((a, b) => {
+        const valueA = a[sort];
+        const valueB = b[sort];
 
-  const winnersList = [...rawWinnersList].sort((a, b) => {
-    const valueA = a[sort];
-    const valueB = b[sort];
+        return order === 'ASC' ? valueA - valueB : valueB - valueA;
+      }),
+    [winnersMap, sort, order],
+  );
 
-    if (order === 'ASC') {
-      return valueA - valueB;
-    }
-    return valueB - valueA;
-  });
+  useEffect(() => {
+    if (winnersList.length === 0) return;
+
+    const carIds = winnersList.map((winner) => winner.id);
+
+    getCarsByIds(carIds)
+      .then((carsData) => {
+        const newCarsMap = carsData.reduce(
+          (acc, car) => {
+            acc[car.id] = car;
+            return acc;
+          },
+          {} as Record<number, Car>,
+        );
+
+        setCarsMap(newCarsMap);
+      })
+      .catch((err) =>
+        console.error('Error fetching car details for winners:', err),
+      );
+  }, [winnersList, getCarsByIds]);
 
   return (
     <div className="winners">
@@ -94,17 +120,30 @@ export default function WinnersView() {
           </thead>
 
           <tbody>
-            {winnersList.map((winner) => (
-              <tr key={winner.id}>
-                <td>{winner.id}</td>
-                <td className="winners__car-cell">
-                  <span className="winners__car-icon">🚗</span>
-                </td>
-                <td className="winners__name-cell">Car {winner.id}</td>
-                <td>{winner.wins}</td>
-                <td>{winner.time}</td>
-              </tr>
-            ))}
+            {winnersList.map((winner) => {
+              const carDetails = carsMap[winner.id];
+
+              return (
+                <tr key={winner.id}>
+                  <td>{winner.id}</td>
+                  <td className="winners__car-cell">
+                    <CarIcon
+                      style={{
+                        width: '60px',
+                        height: 'auto',
+                        color: carDetails?.color || '#ccc',
+                        zIndex: 5,
+                      }}
+                    />
+                  </td>
+                  <td className="winners__name-cell">
+                    {carDetails ? carDetails.name : `Car ${winner.id}`}
+                  </td>
+                  <td>{winner.wins}</td>
+                  <td>{winner.time}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <PaginationComponent />

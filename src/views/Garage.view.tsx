@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import RaceLaneComponent from '../components/garage/RaceLane.component';
 import CarCreationPanel from '../components/garage/CarCreationPanel.component';
 import CarUpdatePanel from '../components/garage/CarUpdatePanel.component';
-import PaginationComponent from '../components/garage/Pagination.component';
+import PaginationComponent from '../components/garage/GaragePagination.component';
 import '../styles/garage.css';
 import CarGenerationPanel from '../components/garage/CarGenerationPanel.component';
 import usePage from '../hooks/usePages';
@@ -10,6 +10,7 @@ import useGarage from '../hooks/useGarage';
 import useEngine from '../hooks/useEngine';
 import CarRacePanel from '../components/garage/CarRacePanel';
 import Navbar from '../components/Navbar.component';
+import WinnerModal from '../components/WinnerModal.component';
 
 export default function GarageView() {
   const { engines } = useEngine();
@@ -43,6 +44,7 @@ export default function GarageView() {
         })}
       </div>
       <PaginationComponent />
+      <WinnerModal />
     </div>
   );
 }

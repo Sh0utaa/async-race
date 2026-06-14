@@ -6,6 +6,7 @@ import {
   fetchCars,
   handleCreateCar,
   handleDeleteCar,
+  handleFetchCarsByIds,
   handleGenerateCars,
   handleUpdateCar,
   setSelectedCar,
@@ -61,6 +62,21 @@ export default function useGarage() {
     dispatch(setSelectedCar(car));
   };
 
+  const getCarsByIds = useCallback(
+    async (carsIds: number[]): Promise<Car[]> => {
+      try {
+        const fetchedCars = await dispatch(
+          handleFetchCarsByIds(carsIds),
+        ).unwrap();
+        return fetchedCars;
+      } catch (error) {
+        console.error('Failed to fetch cars by IDs:', error);
+        throw error;
+      }
+    },
+    [dispatch],
+  );
+
   const onCarGeneration = async () => {
     dispatch(handleGenerateCars());
 
@@ -90,5 +106,6 @@ export default function useGarage() {
     onCarGeneration,
     fetchGarageCars,
     onFetchAllCars,
+    getCarsByIds,
   };
 }

@@ -18,6 +18,7 @@ import {
   deleteCar,
   updateCar,
   getAllCars,
+  getCarById,
 } from '../services/garageService';
 
 interface GarageState {
@@ -75,6 +76,16 @@ export const handleUpdateCar = createAsyncThunk(
   async ({ id, car }: { id: number; car: UpdateCarDto }) => {
     const data = await updateCar(id, car);
     return data;
+  },
+);
+
+export const handleFetchCarsByIds = createAsyncThunk(
+  'garage/handleFetchCarsByIds',
+  async (carIds: number[]): Promise<Car[]> => {
+    const promises: Promise<Car>[] = carIds.map((id) => getCarById(id));
+
+    const cars = await Promise.all(promises);
+    return cars;
   },
 );
 
