@@ -26,6 +26,7 @@ const pageSlice = createSlice({
       state.winnersPage += 1;
     },
     decrementWinnersPage: (state) => {
+      if (state.winnersPage === 1) return;
       state.winnersPage -= 1;
     },
   },

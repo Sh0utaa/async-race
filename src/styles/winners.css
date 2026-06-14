@@ -1,0 +1,74 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
+.winners__container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.winners__title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.winners__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+.winners__table th {
+  background: #fafafa;
+  color: #333;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.winners__table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+  vertical-align: middle;
+}
+
+.winners__table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.winners__table tbody tr:hover {
+  background: #fafafa;
+}
+
+.winners__car-cell {
+  width: 60px;
+}
+
+.winners__car-icon {
+  display: inline-block;
+  transform: scaleX(-1);
+  font-size: 16px;
+}
+
+.winners__name-cell {
+  font-weight: 600;
+  color: #333;
+}

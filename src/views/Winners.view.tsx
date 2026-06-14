@@ -1,47 +1,114 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar.component';
 import useWinners from '../hooks/useWinners';
 import { fetchWinners } from '../redux/winnersSlice';
 import type { WinnersConfig } from '../utils/types';
 import { useAppDispatch } from '../redux/hooks';
+import '../styles/winners.css';
+import usePage from '../hooks/usePages';
+import PaginationComponent from '../components/winners/Pagination.component';
+
+type SortBy = 'wins' | 'time';
+type SortOrder = 'ASC' | 'DESC';
 
 export default function WinnersView() {
   const { winnersMap } = useWinners();
+  const { winnersPage } = usePage();
   const dispatch = useAppDispatch();
+
+  const [sort, setSort] = useState<SortBy>('wins');
+  const [order, setOrder] = useState<SortOrder>('DESC');
 
   useEffect(() => {
     const args: WinnersConfig = {
-      page: 1,
+      page: winnersPage,
       limit: 10,
-      sort: 'wins',
-      order: 'ASC',
+      sort,
+      order,
     };
     dispatch(fetchWinners(args));
-  }, [dispatch]);
+  }, [dispatch, winnersPage, sort, order]);
 
-  const winnersList = Object.values(winnersMap);
+  const rawWinnersList = Object.values(winnersMap);
+
+  const winnersList = [...rawWinnersList].sort((a, b) => {
+    const valueA = a[sort];
+    const valueB = b[sort];
+
+    if (order === 'ASC') {
+      return valueA - valueB;
+    }
+    return valueB - valueA;
+  });
 
   return (
     <div className="winners">
       <Navbar />
-      <table border={1}>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>wins</th>
-            <th>time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {winnersList.map((winner) => (
-            <tr key={winner.id}>
-              <td>{winner.id}</td>
-              <td>{winner.wins}</td>
-              <td>{winner.time}s</td>
+
+      <div className="winners__container">
+        <div className="winners__header-row">
+          <h1 className="winners__title">Winners</h1>
+
+          <div className="winners__sort-container">
+            <div className="winners__sort-group">
+              <label htmlFor="sort-by" className="winners__sort-label">
+                Sort by
+                <select
+                  id="sort-by"
+                  className="winners__sort-select"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value as SortBy)}
+                >
+                  <option value="wins">Wins</option>
+                  <option value="time">Best Time</option>
+                </select>
+              </label>
+            </div>
+
+            <div className="winners__sort-group">
+              <label htmlFor="sort-order" className="winners__sort-label">
+                Order
+                <select
+                  id="sort-order"
+                  className="winners__sort-select"
+                  value={order}
+                  onChange={(e) => setOrder(e.target.value as SortOrder)}
+                >
+                  <option value="ASC">Ascending</option>
+                  <option value="DESC">Descending</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <table className="winners__table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Car</th>
+              <th>Name</th>
+              <th>Wins</th>
+              <th>Best Time (sec)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {winnersList.map((winner) => (
+              <tr key={winner.id}>
+                <td>{winner.id}</td>
+                <td className="winners__car-cell">
+                  <span className="winners__car-icon">🚗</span>
+                </td>
+                <td className="winners__name-cell">Car {winner.id}</td>
+                <td>{winner.wins}</td>
+                <td>{winner.time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <PaginationComponent />
+      </div>
     </div>
   );
 }
