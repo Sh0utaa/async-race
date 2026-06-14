@@ -37,7 +37,19 @@ export const createWinner = async (winner: Winner) => {
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to create winner. Status: ${response.status}`);
+    throw new Error(`Failed to create winners. Status: ${response.status}`);
+  }
+
+  return response.json() as Promise<Winner>;
+};
+
+export const getWinnerById = async (id: number): Promise<Winner | null> => {
+  const response = await fetch(`${WINNERS_URL}/${id}`);
+
+  if (response.status === 404) return null;
+
+  if (!response.ok) {
+    throw new Error(`Failed to create a winner. Status: ${response.status}`);
   }
 
   return response.json() as Promise<Winner>;
@@ -49,7 +61,7 @@ export const updateWinner = async (winner: Winner) => {
     time: winner.time,
   };
 
-  const response = await fetch(`${WINNERS_URL}/id=${winner.id}`, {
+  const response = await fetch(`${WINNERS_URL}/${winner.id}`, {
     method: 'PUT',
     headers: JSON_HEADERS,
     body: JSON.stringify(dto),

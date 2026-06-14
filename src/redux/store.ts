@@ -9,7 +9,7 @@ export const store = configureStore({
     garage: garageReducer,
     page: pageReducer,
     engine: engineReducer,
-    winner: winnersReducer,
+    winners: winnersReducer,
   },
 });
 

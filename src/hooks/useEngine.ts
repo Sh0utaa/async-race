@@ -5,6 +5,7 @@ import {
   updateEngine,
 } from '../redux/engineSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { resetRaceWinner } from '../redux/winnersSlice';
 import type { Car, EngineStatus } from '../utils/types';
 
 export default function useEngine() {
@@ -25,7 +26,8 @@ export default function useEngine() {
   };
 
   const onEngineStart = async (id: number) => {
-    await dispatch(handleEngineStart(id));
+    await dispatch(handleEngineStart(id)).unwrap();
+
     dispatch(handleEngineDrive(id));
   };
 
@@ -56,6 +58,7 @@ export default function useEngine() {
     if (cars.length === 0) return;
 
     const carPromises = cars.map((car) => dispatch(handleEngineStop(car.id)));
+    dispatch(resetRaceWinner());
     await Promise.all(carPromises);
   };
 

@@ -4,6 +4,7 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
+import type { AppDispatch } from './store';
 import type {
   DriveResponse,
   Engine,
@@ -16,6 +17,7 @@ import {
   startEngine,
   stopEngine,
 } from '../services/engineService';
+import { resolveWinner } from './winnersSlice';
 
 type EngineState = Record<number, Engine>;
 
@@ -37,13 +39,19 @@ export const handleEngineStop = createAsyncThunk(
   },
 );
 
-export const handleEngineDrive = createAsyncThunk(
-  'engine/driveEngine',
-  async (id: number) => {
-    const data: DriveResponse = await driveEngine(id);
-    return { id, data };
-  },
-);
+export const handleEngineDrive = createAsyncThunk<
+  { id: number; data: DriveResponse },
+  number,
+  { dispatch: AppDispatch }
+>('engine/driveEngine', async (id: number, { dispatch }) => {
+  const data: DriveResponse = await driveEngine(id);
+
+  if (data.success) {
+    dispatch(resolveWinner(id));
+  }
+
+  return { id, data };
+});
 
 const engineSlice = createSlice({
   name: 'engine',

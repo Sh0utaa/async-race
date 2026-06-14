@@ -63,15 +63,15 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
               <CarComponent car={car} engine={engine} />
             </div>
           </div>
-          {/* <div className="engine">
-          <ul>
-            <li>carId: {engine.carId}</li>
-            <li>Status: {engine.status}</li>
-            <li>Velocity: {engine.velocity}</li>
-            <li>Distance: {engine.distance}</li>
-            <li>Duration: {engine.duration}</li>
-          </ul>
-        </div> */}
+          <div className="engine">
+            <ul>
+              <li>carId: {engine.carId}</li>
+              <li>Status: {engine.status}</li>
+              <li>Velocity: {engine.velocity}</li>
+              <li>Distance: {engine.distance}</li>
+              <li>Duration: {engine.duration}</li>
+            </ul>
+          </div>
         </div>
         <div className="finish-lane" />
       </div>

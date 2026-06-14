@@ -4,25 +4,29 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
+import type { RootState } from './store';
 import {
   createWinner,
+  getWinnerById,
   getWinners,
   updateWinner,
 } from '../services/winnersService';
 import type { Winner, WinnersConfig, WinnersResponse } from '../utils/types';
 
 interface WinnersState {
-  winners: Winner[];
+  winnersMap: Record<number, Winner>;
+  leaderboard: Winner[];
   totalCount: number;
-  currentWinner?: Winner;
+  raceWinner?: number;
   raceStarted: boolean;
   args: WinnersConfig;
 }
 
 const initialState: WinnersState = {
-  winners: [],
+  winnersMap: {},
+  leaderboard: [],
   totalCount: 0,
-  currentWinner: undefined,
+  raceWinner: undefined,
   raceStarted: false,
   args: {
     page: 1,
@@ -38,6 +42,11 @@ export const fetchWinners = createAsyncThunk(
     const data = await getWinners(args);
     return data;
   },
+);
+
+export const fetchWinnerById = createAsyncThunk(
+  'winner/fetchWinnerById',
+  async (id: number): Promise<Winner | null> => getWinnerById(id),
 );
 
 export const handleCreateWinner = createAsyncThunk(
@@ -56,31 +65,88 @@ export const handleUpdateWinner = createAsyncThunk(
   },
 );
 
+export const resolveWinner = createAsyncThunk<
+  number,
+  number,
+  { state: RootState }
+>('winners/resolveWinner', async (id: number, { getState, dispatch }) => {
+  const state = getState();
+
+  const currentEngine = state.engine[id]!;
+  const currentWinner = state.winners.winnersMap[id];
+
+  if (state.winners.raceWinner !== undefined) {
+    return state.winners.raceWinner;
+  }
+
+  const finishTime = currentEngine.duration / 1000;
+
+  if (currentWinner) {
+    const updatedWinner: Winner = {
+      id: currentWinner.id,
+      wins: currentWinner.wins + 1,
+      time: Math.min(currentWinner.time, finishTime),
+    };
+
+    dispatch(handleUpdateWinner(updatedWinner));
+  } else {
+    const newWinner: Winner = {
+      id,
+      wins: 1,
+      time: finishTime,
+    };
+
+    dispatch(handleCreateWinner(newWinner));
+  }
+
+  return id;
+});
+
 const winnersSlice = createSlice({
   name: 'winners',
   initialState,
-  reducers: {},
+  reducers: {
+    resetRaceWinner: (state) => {
+      state.raceWinner = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
         fetchWinners.fulfilled,
         (state, action: PayloadAction<WinnersResponse>) => {
-          state.winners = action.payload.winners;
+          const map: Record<number, Winner> = {};
+
+          action.payload.winners.forEach((w) => {
+            map[w.id] = w;
+          });
+
+          state.winnersMap = map;
+
           state.totalCount = action.payload.totalCount;
         },
       )
-      .addCase(handleCreateWinner.fulfilled, (state, action) => {
-        state.currentWinner = action.payload;
+      .addCase(resolveWinner.fulfilled, (state, action) => {
+        if (state.raceWinner === undefined) {
+          state.raceWinner = action.payload;
+        }
       })
-      .addCase(handleUpdateWinner.fulfilled, (state, action) => {
-        const updatedWinner = action.payload;
-
-        state.winners = state.winners.map((winner) =>
-          winner.id === updatedWinner.id ? updatedWinner : winner,
-        );
-      });
+      .addCase(
+        handleCreateWinner.fulfilled,
+        (state, action: PayloadAction<Winner>) => {
+          const newWinner = action.payload;
+          state.winnersMap[newWinner.id] = newWinner;
+        },
+      )
+      .addCase(
+        handleUpdateWinner.fulfilled,
+        (state, action: PayloadAction<Winner>) => {
+          const updatedWinner = action.payload;
+          state.winnersMap[updatedWinner.id] = updatedWinner;
+        },
+      );
   },
 });
 
-// export const {} = winnersSlice.actions;
+export const { resetRaceWinner } = winnersSlice.actions;
 export default winnersSlice.reducer;
