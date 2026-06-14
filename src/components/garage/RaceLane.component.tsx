@@ -48,6 +48,7 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
         <button
           type="button"
           onClick={() => {
+            onEngineUpdate(car.id, 'stopped');
             onEngineStop(car.id);
           }}
           disabled={engine.status === 'stopped'}

@@ -46,6 +46,8 @@ export default function useEngine() {
       onEngineUpdate(car.id, 'pending');
     });
 
+    dispatch(resetRaceWinner());
+
     const carPromises = cars.map((car) => dispatch(handleEngineStart(car.id)));
     await Promise.all(carPromises);
 
@@ -57,8 +59,15 @@ export default function useEngine() {
   const resetAllCars = async (cars: Car[]) => {
     if (cars.length === 0) return;
 
-    const carPromises = cars.map((car) => dispatch(handleEngineStop(car.id)));
+    cars.forEach((car) => {
+      onEngineUpdate(car.id, 'pending');
+    });
+
     dispatch(resetRaceWinner());
+
+    const carPromises = cars.map((car) =>
+      dispatch(handleEngineStop(car.id)).unwrap(),
+    );
     await Promise.all(carPromises);
   };
 

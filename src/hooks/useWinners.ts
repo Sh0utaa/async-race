@@ -3,9 +3,8 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 export default function useWinners() {
   const dispatch = useAppDispatch();
-  const { winnersMap, totalCount, args, raceStarted } = useAppSelector(
-    (state) => state.winners,
-  );
+  const { winnersMap, totalCount, args, raceStarted, raceWinner } =
+    useAppSelector((state) => state.winners);
 
   const onFetchingWinners = () => {
     dispatch(fetchWinners(args));
@@ -15,6 +14,7 @@ export default function useWinners() {
     winnersMap,
     totalCount,
     raceStarted,
+    raceWinner,
     onFetchingWinners,
   };
 }
