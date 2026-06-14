@@ -49,21 +49,31 @@ export const fetchWinnerById = createAsyncThunk(
   async (id: number): Promise<Winner | null> => getWinnerById(id),
 );
 
-export const handleCreateWinner = createAsyncThunk(
-  'winners/createWinner',
-  async (winner: Winner) => {
-    const data = await createWinner(winner);
-    return data;
-  },
-);
+export const handleCreateWinner = createAsyncThunk<
+  Winner,
+  Winner,
+  { state: RootState }
+>('winners/createWinner', async (winner: Winner, { getState, dispatch }) => {
+  const data = await createWinner(winner);
 
-export const handleUpdateWinner = createAsyncThunk(
-  'winners/updateWinner',
-  async (winner: Winner) => {
-    const data = await updateWinner(winner);
-    return data;
-  },
-);
+  const { args } = getState().winners;
+  dispatch(fetchWinners(args));
+
+  return data;
+});
+
+export const handleUpdateWinner = createAsyncThunk<
+  Winner,
+  Winner,
+  { state: RootState }
+>('winners/updateWinner', async (winner: Winner, { getState, dispatch }) => {
+  const data = await updateWinner(winner);
+
+  const { args } = getState().winners;
+  dispatch(fetchWinners(args));
+
+  return data;
+});
 
 export const resolveWinner = createAsyncThunk<
   number,
@@ -130,21 +140,7 @@ const winnersSlice = createSlice({
         if (state.raceWinner === undefined) {
           state.raceWinner = action.payload;
         }
-      })
-      .addCase(
-        handleCreateWinner.fulfilled,
-        (state, action: PayloadAction<Winner>) => {
-          const newWinner = action.payload;
-          state.winnersMap[newWinner.id] = newWinner;
-        },
-      )
-      .addCase(
-        handleUpdateWinner.fulfilled,
-        (state, action: PayloadAction<Winner>) => {
-          const updatedWinner = action.payload;
-          state.winnersMap[updatedWinner.id] = updatedWinner;
-        },
-      );
+      });
   },
 });
 

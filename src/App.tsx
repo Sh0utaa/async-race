@@ -15,7 +15,7 @@ export default function App() {
   return (
     <>
       {!isRaceView && (
-        <>
+        <div className="landing">
           <h1>Welcome to Async Race</h1>
           <nav>
             <ul>
@@ -27,7 +27,7 @@ export default function App() {
               </li>
             </ul>
           </nav>
-        </>
+        </div>
       )}
 
       <main className="view-container">
