@@ -3,6 +3,7 @@ import '../../styles/racelane.css';
 import CarComponent from './Car.component';
 import useGarage from '../../hooks/useGarage';
 import useEngine from '../../hooks/useEngine';
+import usePage from '../../hooks/usePages';
 
 interface RaceLaneProps {
   car: Car;
@@ -10,9 +11,24 @@ interface RaceLaneProps {
 }
 
 export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
-  const { onDeleteCar, onSelectCar, selectedCar } = useGarage();
+  const { cars, onDeleteCar, onSelectCar, selectedCar } = useGarage();
   const { onEngineStart, onEngineStop, onEngineUpdate } = useEngine();
+  const { garagePage, onGaragePageDecrement } = usePage();
   const isSelected = selectedCar?.id === car.id;
+
+  const handleCarRemoval = async () => {
+    const isLastCarOnPage = cars.length === 1;
+
+    try {
+      await onDeleteCar(car.id);
+
+      if (isLastCarOnPage && garagePage > 1) {
+        onGaragePageDecrement();
+      }
+    } catch (error) {
+      console.error('Failed to accurately transition page rows:', error);
+    }
+  };
 
   if (!engine) return null;
   return (
@@ -30,7 +46,7 @@ export default function RaceLaneComponent({ car, engine }: RaceLaneProps) {
         >
           {isSelected ? 'deselect' : 'select'}
         </button>
-        <button type="button" onClick={() => onDeleteCar(car.id)}>
+        <button type="button" onClick={handleCarRemoval}>
           remove
         </button>
       </div>

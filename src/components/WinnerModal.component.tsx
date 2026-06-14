@@ -31,7 +31,7 @@ export default function WinnerModal() {
         >
           X
         </button>
-        <h1>{currentCar?.name}</h1>
+        <h3>{currentCar?.name}</h3>
         <p>{winnersMap[raceWinner]?.time}</p>
       </div>
     </div>

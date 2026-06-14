@@ -27,6 +27,7 @@ export default function GarageView() {
 
   return (
     <div className="garage">
+      <h2>Garage</h2>
       <Navbar />
       <div className="garage-controls">
         <div className="garage-race-actions">
@@ -37,6 +38,7 @@ export default function GarageView() {
         <CarGenerationPanel />
       </div>
       <div className="garage-lanes">
+        {cars.length === 0 ? 'No cars found' : ''}
         {cars.map((car) => {
           const engine = engines[car.id];
           if (!engine) return null;

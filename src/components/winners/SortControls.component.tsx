@@ -17,7 +17,6 @@ export default function SortControls({
   return (
     <div className="winners__sort-container">
       <div className="winners__sort-group">
-        {/* Nesting the select inside the label satisfies strict ESLint rules */}
         <label htmlFor="sort-by" className="winners__sort-label">
           Sort by
           <select
@@ -31,7 +30,6 @@ export default function SortControls({
           </select>
         </label>
       </div>
-
       <div className="winners__sort-group">
         <label htmlFor="sort-order" className="winners__sort-label">
           Order

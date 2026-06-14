@@ -99,6 +99,24 @@ export const listOfCars: string[] = [
   'Mitsubishi',
 ];
 
+export const listOfModels: string[] = [
+  'Model S',
+  'Mustang',
+  'Civic',
+  '911 Carrera',
+  'Golf GTI',
+  'Corolla',
+  'Impreza WRX',
+  'Aventador',
+  'Giulia',
+  'Ghibli',
+  'Continental GT',
+  'F-Type',
+  '308 GTi',
+  'Clio RS',
+  'XC90',
+];
+
 export const listOfColors: string[] = [
   'red',
   'blue',

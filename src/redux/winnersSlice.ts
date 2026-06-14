@@ -7,6 +7,7 @@ import {
 import type { RootState } from './store';
 import {
   createWinner,
+  deleteWinner,
   getWinnerById,
   getWinners,
   updateWinner,
@@ -75,6 +76,24 @@ export const handleUpdateWinner = createAsyncThunk<
   return data;
 });
 
+export const handleDeleteWinner = createAsyncThunk<
+  number,
+  number,
+  { state: RootState }
+>('winners/deleteWinner', async (id: number, { getState, dispatch }) => {
+  const state = getState();
+  const winnerExists = state.winners.winnersMap[id] !== undefined;
+
+  if (winnerExists) {
+    await deleteWinner(id);
+
+    const { args } = state.winners;
+    dispatch(fetchWinners(args));
+  }
+
+  return id;
+});
+
 export const resolveWinner = createAsyncThunk<
   number,
   number,
@@ -132,15 +151,32 @@ const winnersSlice = createSlice({
           });
 
           state.winnersMap = map;
-
+          state.leaderboard = action.payload.winners;
           state.totalCount = action.payload.totalCount;
         },
       )
-      .addCase(resolveWinner.fulfilled, (state, action) => {
-        if (state.raceWinner === undefined) {
-          state.raceWinner = action.payload;
-        }
-      });
+      .addCase(
+        resolveWinner.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          if (state.raceWinner === undefined) {
+            state.raceWinner = action.payload;
+          }
+        },
+      )
+      .addCase(
+        handleDeleteWinner.fulfilled,
+        (state, action: PayloadAction<number>) => {
+          const deletedId = action.payload;
+
+          state.leaderboard = state.leaderboard.filter(
+            (w) => w.id !== deletedId,
+          );
+
+          if (state.winnersMap[deletedId]) {
+            delete state.winnersMap[deletedId];
+          }
+        },
+      );
   },
 });
 

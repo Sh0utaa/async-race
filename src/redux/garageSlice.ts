@@ -7,6 +7,7 @@ import {
 import {
   listOfCars,
   listOfColors,
+  listOfModels,
   type Car,
   type CarsResponse,
   type CreateCarDto,
@@ -96,11 +97,16 @@ export const handleGenerateCars = createAsyncThunk(
 
     for (let i = 0; i < 100; i++) {
       const brand = listOfCars[Math.floor(Math.random() * listOfCars.length)]!;
+
+      const model =
+        listOfModels[Math.floor(Math.random() * listOfModels.length)]!;
+
       const color =
         listOfColors[Math.floor(Math.random() * listOfColors.length)]!;
 
+      const fullName = `${brand} ${model}`;
       const car: CreateCarDto = {
-        name: brand,
+        name: fullName,
         color,
       };
 

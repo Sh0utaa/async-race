@@ -27,6 +27,11 @@ export default function App() {
               </li>
             </ul>
           </nav>
+          <span>
+            disclamer! please clone and run{' '}
+            <a href="https://github.com/mikhama/async-race-api">this</a>{' '}
+            repository before proceeding :)
+          </span>
         </div>
       )}
 

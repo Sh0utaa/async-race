@@ -76,7 +76,7 @@ export const updateWinner = async (winner: Winner) => {
 
 export const deleteWinner = async (id: number) => {
   const response = await fetch(`${WINNERS_URL}/${id}`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: JSON_HEADERS,
   });
   if (!response.ok) {

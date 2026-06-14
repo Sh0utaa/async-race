@@ -12,6 +12,7 @@ import {
   setSelectedCar,
 } from '../redux/garageSlice';
 import usePage from './usePages';
+import { handleDeleteWinner } from '../redux/winnersSlice';
 
 export default function useGarage() {
   const dispatch = useAppDispatch();
@@ -20,14 +21,6 @@ export default function useGarage() {
     useAppSelector((state) => state.garage);
 
   const { garagePage } = usePage();
-
-  // useEffect(() => {
-  //   const promise = dispatch(fetchCars(garagePage));
-
-  //   return () => {
-  //     promise.abort();
-  //   };
-  // }, [dispatch, garagePage]);
 
   const fetchGarageCars = useCallback(
     (page: number) => dispatch(fetchCars(page)),
@@ -40,13 +33,14 @@ export default function useGarage() {
   );
 
   const onCreateCar = async (car: CreateCarDto) => {
-    if (car.name.trim().length === 0) return;
+    if (car.name.trim().length === 0 || car.name.trim().length >= 20) return;
     await dispatch(handleCreateCar(car));
     dispatch(fetchCars(garagePage));
   };
 
   const onDeleteCar = async (id: number) => {
     await dispatch(handleDeleteCar(id)).unwrap();
+    await dispatch(handleDeleteWinner(id)).unwrap();
     dispatch(fetchCars(garagePage));
   };
 

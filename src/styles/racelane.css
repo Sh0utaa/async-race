@@ -64,10 +64,12 @@ svg {
 }
 
 .car-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0;
+  width: 90px;
 }
 
 .car-name {
@@ -75,7 +77,14 @@ svg {
   font-weight: 600;
   color: #333;
   white-space: nowrap;
-  margin-bottom: -4px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .track-container {

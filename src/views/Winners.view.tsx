@@ -24,6 +24,11 @@ export default function WinnersView() {
 
   const [carsMap, setCarsMap] = useState<Record<number, Car>>({});
 
+  // i know i'm sorting already sorted data from the API
+  // but the javascript convertion from a Dictionary to a List sorts it automatically by the keys
+  // so i have to sort it manually again
+  // didn't have enough time to refactor :/
+
   useEffect(() => {
     const args: WinnersConfig = {
       page: winnersPage,
