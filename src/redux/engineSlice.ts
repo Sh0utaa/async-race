@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import type { AppDispatch, RootState } from './store';
 import type {
+  DriveArgs,
   DriveResponse,
   Engine,
   EngineData,
@@ -41,11 +42,11 @@ export const handleEngineStop = createAsyncThunk(
 
 export const handleEngineDrive = createAsyncThunk<
   { id: number; data: DriveResponse },
-  number,
+  DriveArgs,
   { state: RootState; dispatch: AppDispatch }
 >(
   'engine/driveEngine',
-  async (id: number, { dispatch, getState, requestId }) => {
+  async ({ id, isRace }, { dispatch, getState, requestId }) => {
     const data: DriveResponse = await driveEngine(id);
 
     const state = getState();
@@ -59,7 +60,7 @@ export const handleEngineDrive = createAsyncThunk<
       return { id, data };
     }
 
-    if (data.success) {
+    if (data.success && isRace) {
       dispatch(resolveWinner(id));
     }
 
@@ -135,14 +136,14 @@ const engineSlice = createSlice({
         },
       )
       .addCase(handleEngineDrive.pending, (state, action) => {
-        const id = action.meta.arg;
+        const { id } = action.meta.arg;
         if (state[id] && state[id].status === 'started') {
           state[id].status = 'driving';
           state[id].driveRequestId = action.meta.requestId;
         }
       })
       .addCase(handleEngineDrive.fulfilled, (state, action) => {
-        const id = action.meta.arg;
+        const { id } = action.meta.arg;
 
         if (!state[id]) return;
 
@@ -151,7 +152,7 @@ const engineSlice = createSlice({
         state[id].status = 'finished';
       })
       .addCase(handleEngineDrive.rejected, (state, action) => {
-        const id = action.meta.arg;
+        const { id } = action.meta.arg;
 
         if (!state[id]) return;
 

@@ -46,6 +46,11 @@ export interface UpdateCarDto {
   color?: string;
 }
 
+export interface DriveArgs {
+  id: number;
+  isRace: boolean;
+}
+
 export interface Winner {
   id: number;
   wins: number;

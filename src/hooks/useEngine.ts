@@ -27,8 +27,7 @@ export default function useEngine() {
 
   const onEngineStart = async (id: number) => {
     await dispatch(handleEngineStart(id)).unwrap();
-
-    dispatch(handleEngineDrive(id));
+    dispatch(handleEngineDrive({ id, isRace: false }));
   };
 
   const onEngineStop = (id: number) => {
@@ -36,7 +35,7 @@ export default function useEngine() {
   };
 
   const onEngineDrive = (id: number) => {
-    dispatch(handleEngineDrive(id));
+    dispatch(handleEngineDrive({ id, isRace: false }));
   };
 
   const raceAllCars = async (cars: Car[]) => {
@@ -52,7 +51,7 @@ export default function useEngine() {
     await Promise.all(carPromises);
 
     cars.forEach((car) => {
-      dispatch(handleEngineDrive(car.id));
+      dispatch(handleEngineDrive({ id: car.id, isRace: true }));
     });
   };
 
